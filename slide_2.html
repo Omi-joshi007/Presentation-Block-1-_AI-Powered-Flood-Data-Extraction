@@ -1,0 +1,2516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8" />
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+/>
+
+<title>AI-Powered Flood Data Extraction — Slide 2</title>
+
+<link
+  href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+  rel="stylesheet"
+/>
+
+<style>
+
+/* =========================================================
+   GLOBAL
+========================================================= */
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+
+  width: 100%;
+  height: 100%;
+
+  margin: 0;
+
+  overflow: hidden;
+
+  background: #03101a;
+
+  font-family: "Inter", sans-serif;
+}
+
+body {
+  color: white;
+}
+
+
+/* =========================================================
+   SLIDE
+========================================================= */
+
+.slide {
+
+  position: relative;
+
+  width: 100vw;
+  height: 100vh;
+
+  overflow: hidden;
+
+  background:
+
+    radial-gradient(
+      circle at 50% 90%,
+      rgba(31, 140, 180, .16),
+      transparent 36%
+    ),
+
+    linear-gradient(
+      180deg,
+      #07131e 0%,
+      #071923 50%,
+      #06151d 100%
+    );
+}
+
+
+/* =========================================================
+   GRID
+========================================================= */
+
+.grid {
+
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 1;
+
+  opacity: .07;
+
+  background-image:
+
+    linear-gradient(
+      rgba(130, 210, 235, .16) 1px,
+      transparent 1px
+    ),
+
+    linear-gradient(
+      90deg,
+      rgba(130, 210, 235, .16) 1px,
+      transparent 1px
+    );
+
+  background-size: 48px 48px;
+}
+
+
+/* =========================================================
+   SKY GLOW
+========================================================= */
+
+.sky-glow {
+
+  position: absolute;
+
+  z-index: 2;
+
+  width: 620px;
+  height: 300px;
+
+  right: -120px;
+  top: -80px;
+
+  border-radius: 50%;
+
+  background:
+    rgba(105, 195, 225, .09);
+
+  filter:
+    blur(95px);
+}
+
+
+/* =========================================================
+   RAIN
+========================================================= */
+
+.rain {
+
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 4;
+
+  overflow: hidden;
+
+  pointer-events: none;
+}
+
+.rain-drop {
+
+  position: absolute;
+
+  top: -15vh;
+
+  width: 1px;
+
+  height: 50px;
+
+  opacity: .30;
+
+  transform:
+    rotate(8deg);
+
+  background:
+
+    linear-gradient(
+      transparent,
+      rgba(210, 240, 255, .62)
+    );
+}
+
+
+/* =========================================================
+   WATER
+========================================================= */
+
+.water {
+
+  position: absolute;
+
+  z-index: 5;
+
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  height: 16vh;
+
+  overflow: hidden;
+
+  background:
+
+    linear-gradient(
+      180deg,
+      rgba(50, 145, 185, .30),
+      rgba(5, 48, 75, .75)
+    );
+}
+
+.wave {
+
+  position: absolute;
+
+  left: -8%;
+  top: -22px;
+
+  width: 116%;
+
+  height: 60px;
+}
+
+.wave svg {
+
+  width: 100%;
+  height: 100%;
+}
+
+
+/* =========================================================
+   VIGNETTE
+========================================================= */
+
+.vignette {
+
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 7;
+
+  pointer-events: none;
+
+  background:
+
+    linear-gradient(
+      90deg,
+      rgba(0, 0, 0, .22),
+      transparent 45%,
+      rgba(0, 0, 0, .10)
+    ),
+
+    radial-gradient(
+      circle at center,
+      transparent 52%,
+      rgba(0, 0, 0, .28)
+    );
+}
+
+
+/* =========================================================
+   CONTENT
+========================================================= */
+
+.content {
+
+  position: absolute;
+
+  z-index: 20;
+
+  inset: 0;
+
+  padding:
+
+    clamp(34px, 5.3vh, 64px)
+
+    clamp(42px, 6vw, 105px)
+
+    clamp(75px, 10vh, 110px);
+}
+
+
+/* =========================================================
+   TOP BAR
+========================================================= */
+
+.topbar {
+
+  display: flex;
+
+  justify-content:
+    space-between;
+
+  align-items:
+    center;
+}
+
+.kicker {
+
+  color: #8bdfff;
+
+  font-size:
+    clamp(10px, .82vw, 13px);
+
+  font-weight: 800;
+
+  letter-spacing: .20em;
+
+  text-transform: uppercase;
+}
+
+.brand {
+
+  color:
+    rgba(255, 255, 255, .32);
+
+  font-size:
+    clamp(9px, .72vw, 11px);
+
+  letter-spacing: .15em;
+}
+
+
+/* =========================================================
+   TITLE
+========================================================= */
+
+.heading-row {
+
+  margin-top:
+    clamp(20px, 3.1vh, 36px);
+
+  display: flex;
+
+  justify-content:
+    space-between;
+
+  align-items:
+    flex-end;
+
+  gap: 40px;
+}
+
+.heading {
+
+  opacity: 0;
+
+  transform:
+    translateY(25px);
+}
+
+.heading-label {
+
+  margin-bottom: 10px;
+
+  color:
+    rgba(220, 241, 250, .52);
+
+  font-size:
+    clamp(10px, .78vw, 12px);
+
+  font-weight: 700;
+
+  letter-spacing: .13em;
+
+  text-transform: uppercase;
+}
+
+h1 {
+
+  margin: 0;
+
+  max-width: 1050px;
+
+  font-size:
+    clamp(34px, 4.6vw, 72px);
+
+  line-height: 1.02;
+
+  letter-spacing: -.045em;
+
+  font-weight: 900;
+}
+
+.accent {
+
+  color: #78dfff;
+}
+
+.short-message {
+
+  opacity: 0;
+
+  max-width: 360px;
+
+  padding-bottom: 7px;
+
+  color:
+    rgba(226, 242, 249, .60);
+
+  font-size:
+    clamp(11px, .92vw, 14px);
+
+  line-height: 1.5;
+}
+
+
+/* =========================================================
+   STORY AREA
+========================================================= */
+
+.story {
+
+  position: relative;
+
+  margin-top:
+    clamp(25px, 3.5vh, 42px);
+
+  height:
+    clamp(410px, 56vh, 570px);
+
+  display: grid;
+
+  grid-template-columns:
+    1.12fr
+    .18fr
+    .70fr;
+
+  gap:
+    clamp(16px, 2vw, 35px);
+
+  align-items: center;
+}
+
+
+/* =========================================================
+   ARTICLE PANEL
+========================================================= */
+
+.article-shell {
+
+  position: relative;
+
+  opacity: 0;
+
+  transform:
+    translateY(30px);
+
+  width: 100%;
+
+  height:
+    min(52vh, 500px);
+
+  border-radius: 24px;
+
+  overflow: hidden;
+
+  border:
+    1px solid
+    rgba(160, 220, 242, .16);
+
+  background:
+    rgba(6, 20, 28, .87);
+
+  box-shadow:
+
+    0 30px 80px
+    rgba(0, 0, 0, .34),
+
+    inset 0 1px
+    rgba(255, 255, 255, .05);
+
+  backdrop-filter:
+    blur(16px);
+}
+
+
+/* =========================================================
+   BROWSER BAR
+========================================================= */
+
+.browser-bar {
+
+  height: 48px;
+
+  display: flex;
+
+  align-items: center;
+
+  padding: 0 17px;
+
+  gap: 7px;
+
+  background:
+    rgba(255, 255, 255, .035);
+
+  border-bottom:
+    1px solid
+    rgba(255, 255, 255, .055);
+}
+
+.browser-dot {
+
+  width: 7px;
+  height: 7px;
+
+  border-radius: 50%;
+
+  background:
+    rgba(255, 255, 255, .22);
+}
+
+.browser-source {
+
+  margin-left: 10px;
+
+  color:
+    rgba(255, 255, 255, .36);
+
+  font-size: 9px;
+
+  letter-spacing: .10em;
+}
+
+
+/* =========================================================
+   ARTICLE BODY
+========================================================= */
+
+.article-body {
+
+  height:
+    calc(100% - 48px);
+
+  padding:
+
+    clamp(20px, 2.2vw, 32px)
+
+    clamp(22px, 2.5vw, 38px);
+
+  overflow: hidden;
+}
+
+.publisher {
+
+  display: flex;
+
+  justify-content:
+    space-between;
+
+  align-items:
+    center;
+
+  margin-bottom: 15px;
+}
+
+.publisher-name {
+
+  color: #8bdfff;
+
+  font-weight: 900;
+
+  font-size:
+    clamp(11px, .9vw, 14px);
+
+  letter-spacing: .11em;
+}
+
+.publisher-date {
+
+  color:
+    rgba(255, 255, 255, .33);
+
+  font-size:
+    clamp(9px, .68vw, 11px);
+}
+
+.article-title {
+
+  max-width: 900px;
+
+  color: white;
+
+  font-size:
+    clamp(19px, 1.7vw, 28px);
+
+  font-weight: 800;
+
+  line-height: 1.18;
+
+  letter-spacing: -.025em;
+}
+
+.event-title-text {
+
+  display: inline;
+
+  padding: 1px 3px;
+
+  border-radius: 3px;
+
+  transition:
+    background .35s ease,
+    color .35s ease,
+    box-shadow .35s ease;
+}
+
+.byline {
+
+  margin-top: 10px;
+
+  color:
+    rgba(255, 255, 255, .40);
+
+  font-size:
+    clamp(9px, .72vw, 11px);
+}
+
+.divider {
+
+  width: 100%;
+
+  height: 1px;
+
+  margin: 17px 0;
+
+  background:
+
+    linear-gradient(
+      90deg,
+      rgba(255, 255, 255, .12),
+      transparent
+    );
+}
+
+
+/* =========================================================
+   ARTICLE TEXT
+========================================================= */
+
+.article-copy {
+
+  position: relative;
+
+  color:
+    rgba(223, 238, 245, .66);
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size:
+    clamp(13px, 1vw, 16px);
+
+  line-height: 1.68;
+}
+
+.article-copy p {
+
+  margin:
+    0 0 14px;
+}
+
+.buried {
+
+  position: relative;
+
+  display: inline;
+
+  padding:
+    1px 3px;
+
+  border-radius: 3px;
+
+  transition:
+    background .35s ease,
+    color .35s ease,
+    box-shadow .35s ease;
+}
+
+
+/* =========================================================
+   DATA LABEL
+========================================================= */
+
+.data-label {
+
+  opacity: 0;
+
+  position: absolute;
+
+  right: 30px;
+
+  bottom: 28px;
+
+  z-index: 10;
+
+  padding:
+    9px 13px;
+
+  border-radius: 999px;
+
+  border:
+    1px solid
+    rgba(120, 223, 255, .25);
+
+  background:
+    rgba(12, 40, 54, .88);
+
+  color: #8bdfff;
+
+  font-size:
+    clamp(9px, .7vw, 11px);
+
+  font-weight: 800;
+
+  letter-spacing: .10em;
+}
+
+
+/* =========================================================
+   EXTRACTION COLUMN
+========================================================= */
+
+.extract-zone {
+
+  position: relative;
+
+  height: 100%;
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+}
+
+.extract-arrow {
+
+  opacity: 0;
+
+  width: 100%;
+
+  height: 2px;
+
+  position: relative;
+
+  transform:
+    scaleX(0);
+
+  transform-origin:
+    left center;
+
+  background:
+
+    linear-gradient(
+      90deg,
+      rgba(120, 223, 255, .10),
+      #78dfff
+    );
+}
+
+.extract-arrow::after {
+
+  content: "";
+
+  position: absolute;
+
+  right: 0;
+
+  top: -4px;
+
+  width: 8px;
+
+  height: 8px;
+
+  border-top:
+    2px solid #78dfff;
+
+  border-right:
+    2px solid #78dfff;
+
+  transform:
+    rotate(45deg);
+}
+
+
+/* =========================================================
+   STRUCTURED CARD
+========================================================= */
+
+.structured-card {
+
+  opacity: 0;
+
+  transform:
+    translateX(35px);
+
+  width: 100%;
+
+  padding:
+    clamp(20px, 2vw, 30px);
+
+  border-radius: 24px;
+
+  border:
+    1px solid
+    rgba(120, 223, 255, .22);
+
+  background:
+
+    linear-gradient(
+      145deg,
+      rgba(48, 151, 190, .12),
+      rgba(5, 20, 29, .90)
+    );
+
+  box-shadow:
+
+    0 28px 70px
+    rgba(0, 0, 0, .30),
+
+    inset 0 1px
+    rgba(255, 255, 255, .04);
+}
+
+.structured-heading {
+
+  margin-bottom: 18px;
+
+  color: #8bdfff;
+
+  font-size:
+    clamp(10px, .78vw, 12px);
+
+  font-weight: 800;
+
+  letter-spacing: .16em;
+
+  text-transform: uppercase;
+}
+
+.field {
+
+  opacity: 0;
+
+  transform:
+    translateY(10px);
+
+  margin-top: 10px;
+
+  padding:
+    11px 13px;
+
+  border-radius: 13px;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, .065);
+
+  background:
+    rgba(255, 255, 255, .033);
+}
+
+.field-label {
+
+  color:
+    rgba(255, 255, 255, .35);
+
+  font-size:
+    clamp(8px, .62vw, 9px);
+
+  font-weight: 700;
+
+  letter-spacing: .11em;
+
+  text-transform: uppercase;
+}
+
+.field-value {
+
+  margin-top: 4px;
+
+  color: #f1fbff;
+
+  font-size:
+    clamp(11px, .87vw, 14px);
+
+  line-height: 1.35;
+
+  font-weight: 700;
+}
+
+.event-value {
+  color: #9be8ff;
+}
+
+.impact {
+  color: #82e5ff;
+}
+
+
+/* =========================================================
+   TAKEAWAY
+========================================================= */
+
+.takeaway {
+
+  opacity: 0;
+
+  position: absolute;
+
+  z-index: 28;
+
+  left:
+    clamp(42px, 6vw, 105px);
+
+  bottom:
+    clamp(25px, 3.7vh, 42px);
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 11px;
+
+  color:
+    rgba(230, 244, 250, .64);
+
+  font-size:
+    clamp(10px, .78vw, 12px);
+}
+
+.takeaway-dot {
+
+  width: 8px;
+
+  height: 8px;
+
+  border-radius: 50%;
+
+  background: #78dfff;
+
+  box-shadow:
+    0 0 13px
+    rgba(120, 223, 255, .70);
+}
+
+.takeaway strong {
+
+  color: #ffffff;
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="slide">
+
+
+<!-- =====================================================
+     BACKGROUND
+===================================================== -->
+
+<div class="grid"></div>
+
+<div class="sky-glow"></div>
+
+<div
+  class="rain"
+  id="rain"
+></div>
+
+<div class="vignette"></div>
+
+
+<!-- =====================================================
+     WATER
+===================================================== -->
+
+<div class="water">
+
+
+<div class="wave">
+
+<svg
+  viewBox="0 0 1600 80"
+  preserveAspectRatio="none"
+>
+
+<path
+
+  d="
+    M0,40
+    C160,0 320,80 480,40
+    C640,0 800,80 960,40
+    C1120,0 1280,80 1440,40
+    C1510,22 1560,25 1600,40
+    L1600,80
+    L0,80
+    Z
+  "
+
+  fill="rgba(82,183,222,.65)"
+
+/>
+
+</svg>
+
+</div>
+
+
+</div>
+
+
+<!-- =====================================================
+     CONTENT
+===================================================== -->
+
+<div class="content">
+
+
+<div class="topbar">
+
+
+<div class="kicker">
+
+  The Core Problem
+
+</div>
+
+
+<div class="brand">
+
+  AI-POWERED FLOOD DATA EXTRACTION
+
+</div>
+
+
+</div>
+
+
+<!-- =====================================================
+     HEADING
+===================================================== -->
+
+<div class="heading-row">
+
+
+<div
+  class="heading"
+  id="heading"
+>
+
+
+<div class="heading-label">
+
+  What problem are we solving?
+
+</div>
+
+
+<h1>
+
+  The information exists.
+
+  <br>
+
+  <span class="accent">
+
+    It is just buried in the story.
+
+  </span>
+
+</h1>
+
+
+</div>
+
+
+<div
+  class="short-message"
+  id="shortMessage"
+>
+
+  A human can read this and understand the impact.
+  A database cannot — until the information is extracted.
+
+</div>
+
+
+</div>
+
+
+<!-- =====================================================
+     STORY
+===================================================== -->
+
+<div class="story">
+
+
+<!-- ===================================================
+     REAL ARTICLE
+=================================================== -->
+
+<div
+  class="article-shell"
+  id="article"
+>
+
+
+<div class="browser-bar">
+
+
+<div class="browser-dot"></div>
+
+<div class="browser-dot"></div>
+
+<div class="browser-dot"></div>
+
+
+<div class="browser-source">
+
+  REAL NZ NEWS ARTICLE
+
+</div>
+
+
+</div>
+
+
+<div class="article-body">
+
+
+<div class="publisher">
+
+
+<div class="publisher-name">
+
+  NZ HERALD · RNZ
+
+</div>
+
+
+<div class="publisher-date">
+
+  18 FEBRUARY 2023
+
+</div>
+
+
+</div>
+
+
+<div class="article-title">
+
+  <span
+    class="event-title-text"
+    id="eventText"
+  >
+    Cyclone Gabrielle
+  </span>:
+
+  Gisborne aerial photos show scale of disaster
+
+</div>
+
+
+<div class="byline">
+
+  Kate Green · RNZ
+
+</div>
+
+
+<div class="divider"></div>
+
+
+<div class="article-copy">
+
+
+<p>
+
+  “People in
+
+  <span
+    class="buried"
+    id="locationText"
+  >
+    Tokomaru Bay
+  </span>
+
+  are working to reconnect the town after being
+
+  <span
+    class="buried"
+    id="impactText"
+  >
+    cut off
+  </span>
+
+  by
+
+  <span
+    class="buried"
+    id="incidentText"
+  >
+    flooding and road damage
+  </span>.”
+
+</p>
+
+
+<p>
+
+  Civil Defence flights were assessing damage across the region
+  and helping move essential supplies into badly affected communities.
+
+</p>
+
+
+<p>
+
+  To a reader, the impact is obvious.
+  To a database, this is still only text.
+
+</p>
+
+
+</div>
+
+
+<div
+  class="data-label"
+  id="dataLabel"
+>
+
+  USEFUL DATA IS BURIED HERE
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+<!-- ===================================================
+     EXTRACTION
+=================================================== -->
+
+<div class="extract-zone">
+
+
+<div
+  class="extract-arrow"
+  id="extractArrow"
+></div>
+
+
+</div>
+
+
+<!-- ===================================================
+     STRUCTURED RESULT
+=================================================== -->
+
+<div
+  class="structured-card"
+  id="structuredCard"
+>
+
+
+<div class="structured-heading">
+
+  Structured information
+
+</div>
+
+
+<div
+  class="field"
+  id="fieldEvent"
+>
+
+<div class="field-label">
+
+  EVENT
+
+</div>
+
+<div
+  class="field-value event-value"
+>
+
+  Cyclone Gabrielle
+
+</div>
+
+</div>
+
+
+<div
+  class="field"
+  id="fieldLocation"
+>
+
+<div class="field-label">
+
+  LOCATION
+
+</div>
+
+<div class="field-value">
+
+  Tokomaru Bay · Tairāwhiti
+
+</div>
+
+</div>
+
+
+<div
+  class="field"
+  id="fieldIncident"
+>
+
+<div class="field-label">
+
+  INCIDENT
+
+</div>
+
+<div class="field-value">
+
+  Flooding + road damage
+
+</div>
+
+</div>
+
+
+<div
+  class="field"
+  id="fieldImpact"
+>
+
+<div class="field-label">
+
+  IMPACT
+
+</div>
+
+<div class="field-value impact">
+
+  Community isolated / cut off
+
+</div>
+
+</div>
+
+
+<div
+  class="field"
+  id="fieldEvidence"
+>
+
+<div class="field-label">
+
+  EVIDENCE
+
+</div>
+
+<div class="field-value">
+
+  Linked back to original news source
+
+</div>
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+<!-- =====================================================
+     TAKEAWAY
+===================================================== -->
+
+<div
+  class="takeaway"
+  id="takeaway"
+>
+
+
+<div class="takeaway-dot"></div>
+
+
+<div>
+
+  <strong>
+
+    Hidden information becomes structured, searchable flood data.
+
+  </strong>
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+<!-- =====================================================
+     GSAP
+===================================================== -->
+
+<script
+  src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"
+></script>
+
+
+<script>
+
+/* =========================================================
+   RAIN
+========================================================= */
+
+const rain =
+  document.getElementById("rain");
+
+
+for (
+  let i = 0;
+  i < 80;
+  i++
+) {
+
+  const drop =
+    document.createElement("div");
+
+
+  drop.className =
+    "rain-drop";
+
+
+  drop.style.left =
+    Math.random() * 105 + "%";
+
+
+  drop.style.height =
+    20 +
+    Math.random() * 50 +
+    "px";
+
+
+  drop.style.opacity =
+    .10 +
+    Math.random() * .35;
+
+
+  rain.appendChild(
+    drop
+  );
+
+
+  gsap.to(
+    drop,
+    {
+
+      y:
+        window.innerHeight * 1.35,
+
+      x:
+        65,
+
+      duration:
+        .8 +
+        Math.random() * .8,
+
+      delay:
+        Math.random() * 1.7,
+
+      repeat:
+        -1,
+
+      ease:
+        "none"
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   WATER MOTION
+========================================================= */
+
+gsap.to(
+  ".wave",
+  {
+
+    x:
+      -90,
+
+    duration:
+      3,
+
+    repeat:
+      -1,
+
+    yoyo:
+      true,
+
+    ease:
+      "sine.inOut"
+
+  }
+);
+
+
+/* =========================================================
+   INITIAL ENTRANCE
+========================================================= */
+
+function initialEntrance() {
+
+
+  gsap.set(
+    "#heading",
+    {
+      opacity: 0,
+      y: 25
+    }
+  );
+
+
+  gsap.set(
+    "#shortMessage",
+    {
+      opacity: 0,
+      y: 15
+    }
+  );
+
+
+  gsap.set(
+    "#article",
+    {
+      opacity: 0,
+      y: 30,
+      scale: .97
+    }
+  );
+
+
+  gsap.set(
+    "#dataLabel",
+    {
+      opacity: 0,
+      scale: .8
+    }
+  );
+
+
+  gsap.set(
+    "#extractArrow",
+    {
+      opacity: 0,
+      scaleX: 0
+    }
+  );
+
+
+  gsap.set(
+    "#structuredCard",
+    {
+      opacity: 0,
+      x: 35
+    }
+  );
+
+
+  gsap.set(
+    ".field",
+    {
+      opacity: 0,
+      y: 10
+    }
+  );
+
+
+  gsap.set(
+    "#takeaway",
+    {
+      opacity: 0,
+      y: 10
+    }
+  );
+
+
+  gsap.set(
+    [
+      "#eventText",
+      "#locationText",
+      "#incidentText",
+      "#impactText"
+    ],
+    {
+
+      background:
+        "transparent",
+
+      color:
+        "inherit",
+
+      boxShadow:
+        "none"
+
+    }
+  );
+
+
+  const tl =
+    gsap.timeline();
+
+
+  tl.to(
+    "#heading",
+    {
+
+      opacity: 1,
+
+      y: 0,
+
+      duration: .8,
+
+      ease: "power3.out"
+
+    },
+    .15
+  );
+
+
+  tl.to(
+    "#shortMessage",
+    {
+
+      opacity: 1,
+
+      y: 0,
+
+      duration: .5
+
+    },
+    .55
+  );
+
+
+  tl.to(
+    "#article",
+    {
+
+      opacity: 1,
+
+      y: 0,
+
+      scale: 1,
+
+      duration: .75,
+
+      ease: "power3.out"
+
+    },
+    .45
+  );
+
+
+  tl.to(
+    "#dataLabel",
+    {
+
+      opacity: 1,
+
+      scale: 1,
+
+      duration: .45,
+
+      ease: "back.out(1.5)"
+
+    },
+    1.2
+  );
+
+}
+
+
+/* =========================================================
+   STEP STATE
+========================================================= */
+
+let currentStep = 1;
+
+const MAX_STEP = 4;
+
+
+/* =========================================================
+   STEP 2 — FORWARD
+   Highlight extracted information
+========================================================= */
+
+function showBuriedInformation() {
+
+
+  gsap.to(
+    "#eventText",
+    {
+
+      color:
+        "#9be8ff",
+
+      background:
+        "rgba(70,190,235,.20)",
+
+      boxShadow:
+        "0 0 20px rgba(80,195,235,.13)",
+
+      duration:
+        .42
+
+    }
+  );
+
+
+  gsap.to(
+    "#locationText",
+    {
+
+      color:
+        "#9be8ff",
+
+      background:
+        "rgba(70,190,235,.18)",
+
+      boxShadow:
+        "0 0 18px rgba(80,195,235,.10)",
+
+      duration:
+        .42,
+
+      delay:
+        .16
+
+    }
+  );
+
+
+  gsap.to(
+    "#incidentText",
+    {
+
+      color:
+        "#9be8ff",
+
+      background:
+        "rgba(70,190,235,.18)",
+
+      boxShadow:
+        "0 0 18px rgba(80,195,235,.10)",
+
+      duration:
+        .42,
+
+      delay:
+        .32
+
+    }
+  );
+
+
+  gsap.to(
+    "#impactText",
+    {
+
+      color:
+        "#9be8ff",
+
+      background:
+        "rgba(70,190,235,.18)",
+
+      boxShadow:
+        "0 0 18px rgba(80,195,235,.10)",
+
+      duration:
+        .42,
+
+      delay:
+        .48
+
+    }
+  );
+
+
+}
+
+
+/* =========================================================
+   STEP 2 — BACKWARD
+   Remove highlights only
+========================================================= */
+
+function hideBuriedInformation() {
+
+
+  gsap.killTweensOf(
+    [
+      "#eventText",
+      "#locationText",
+      "#incidentText",
+      "#impactText"
+    ]
+  );
+
+
+  gsap.to(
+    [
+      "#eventText",
+      "#locationText",
+      "#incidentText",
+      "#impactText"
+    ],
+    {
+
+      color:
+        "inherit",
+
+      background:
+        "transparent",
+
+      boxShadow:
+        "none",
+
+      duration:
+        .35
+
+    }
+  );
+
+
+}
+
+
+/* =========================================================
+   STEP 3 — FORWARD
+   Original structured extraction animation
+========================================================= */
+
+function extractInformation() {
+
+
+  const tl =
+    gsap.timeline();
+
+
+  tl.to(
+    "#extractArrow",
+    {
+
+      opacity: 1,
+
+      scaleX: 1,
+
+      duration: .55,
+
+      ease: "power2.out"
+
+    }
+  );
+
+
+  tl.to(
+    "#structuredCard",
+    {
+
+      opacity: 1,
+
+      x: 0,
+
+      duration: .65,
+
+      ease: "power3.out"
+
+    },
+    .32
+  );
+
+
+  tl.to(
+    "#fieldEvent",
+    {
+
+      opacity: 1,
+
+      y: 0,
+
+      duration: .32
+
+    },
+    .62
+  );
+
+
+  tl.to(
+    "#fieldLocation",
+    {
+
+      opacity: 1,
+
+      y: 0,
+
+      duration: .32
+
+    },
+    .82
+  );
+
+
+  tl.to(
+    "#fieldIncident",
+    {
+
+      opacity: 1,
+
+      y: 0,
+
+      duration: .32
+
+    },
+    1.02
+  );
+
+
+  tl.to(
+    "#fieldImpact",
+    {
+
+      opacity: 1,
+
+      y: 0,
+
+      duration: .32
+
+    },
+    1.22
+  );
+
+
+  tl.to(
+    "#fieldEvidence",
+    {
+
+      opacity: 1,
+
+      y: 0,
+
+      duration: .32
+
+    },
+    1.42
+  );
+
+
+}
+
+
+/* =========================================================
+   STEP 3 — BACKWARD
+   Hide structured extraction only
+
+   IMPORTANT:
+   highlights remain visible.
+========================================================= */
+
+function hideExtractedInformation() {
+
+
+  gsap.killTweensOf(
+    [
+      "#extractArrow",
+      "#structuredCard",
+      ".field"
+    ]
+  );
+
+
+  /*
+     Hide fields first
+  */
+
+  gsap.to(
+    ".field",
+    {
+
+      opacity: 0,
+
+      y: 10,
+
+      duration: .22,
+
+      stagger: {
+        each: .05,
+        from: "end"
+      }
+
+    }
+  );
+
+
+  /*
+     Then hide structured card
+  */
+
+  gsap.to(
+    "#structuredCard",
+    {
+
+      opacity: 0,
+
+      x: 35,
+
+      duration: .40,
+
+      delay: .20,
+
+      ease: "power2.in"
+
+    }
+  );
+
+
+  /*
+     Hide arrow
+  */
+
+  gsap.to(
+    "#extractArrow",
+    {
+
+      opacity: 0,
+
+      scaleX: 0,
+
+      duration: .35,
+
+      delay: .18,
+
+      ease: "power2.in"
+
+    }
+  );
+
+
+}
+
+
+/* =========================================================
+   STEP 4 — FORWARD
+
+   IMPORTANT:
+   This ONLY adds takeaway.
+
+   It does NOT redraw or refresh structured information.
+========================================================= */
+
+function showFinalMessage() {
+
+
+  gsap.to(
+    "#takeaway",
+    {
+
+      opacity: 1,
+
+      y: 0,
+
+      duration: .5,
+
+      ease: "power3.out"
+
+    }
+  );
+
+
+  /*
+     Keep your original subtle final glow.
+     No resetting / rebuilding structured card.
+  */
+
+  gsap.to(
+    "#structuredCard",
+    {
+
+      boxShadow:
+        "0 30px 95px rgba(45,165,210,.18)",
+
+      duration: .7
+
+    }
+  );
+
+
+}
+
+
+/* =========================================================
+   STEP 4 — BACKWARD
+
+   Remove ONLY takeaway.
+
+   Structured information stays exactly as it is.
+========================================================= */
+
+function hideFinalMessage() {
+
+
+  gsap.killTweensOf(
+    "#takeaway"
+  );
+
+
+  gsap.to(
+    "#takeaway",
+    {
+
+      opacity: 0,
+
+      y: 10,
+
+      duration: .35,
+
+      ease: "power2.in"
+
+    }
+  );
+
+
+  /*
+     Return glow to original card shadow.
+     We DO NOT hide or recreate the card.
+  */
+
+  gsap.to(
+    "#structuredCard",
+    {
+
+      boxShadow:
+        "0 28px 70px rgba(0,0,0,.30), inset 0 1px rgba(255,255,255,.04)",
+
+      duration: .40
+
+    }
+  );
+
+
+}
+
+
+/* =========================================================
+   NEXT STEP
+========================================================= */
+
+function nextStep() {
+
+
+  if (
+    currentStep === 1
+  ) {
+
+
+    currentStep = 2;
+
+
+    showBuriedInformation();
+
+
+    return true;
+
+
+  }
+
+
+  if (
+    currentStep === 2
+  ) {
+
+
+    currentStep = 3;
+
+
+    extractInformation();
+
+
+    return true;
+
+
+  }
+
+
+  if (
+    currentStep === 3
+  ) {
+
+
+    currentStep = 4;
+
+
+    /*
+       ONLY the final message is added.
+    */
+
+    showFinalMessage();
+
+
+    return true;
+
+
+  }
+
+
+  /*
+     Already at final state.
+  */
+
+  return false;
+
+
+}
+
+
+/* =========================================================
+   PREVIOUS STEP
+========================================================= */
+
+function previousStep() {
+
+
+  /* =====================================================
+     STEP 4 → STEP 3
+
+     Remove final message ONLY.
+  ===================================================== */
+
+  if (
+    currentStep === 4
+  ) {
+
+
+    currentStep = 3;
+
+
+    hideFinalMessage();
+
+
+    return true;
+
+
+  }
+
+
+  /* =====================================================
+     STEP 3 → STEP 2
+
+     Hide structured result.
+     Keep highlights.
+  ===================================================== */
+
+  if (
+    currentStep === 3
+  ) {
+
+
+    currentStep = 2;
+
+
+    hideExtractedInformation();
+
+
+    return true;
+
+
+  }
+
+
+  /* =====================================================
+     STEP 2 → STEP 1
+
+     Remove highlights.
+  ===================================================== */
+
+  if (
+    currentStep === 2
+  ) {
+
+
+    currentStep = 1;
+
+
+    hideBuriedInformation();
+
+
+    return true;
+
+
+  }
+
+
+  /*
+     Already Step 1.
+
+     Return false so presentation.html
+     knows the previous slide can be shown.
+  */
+
+  return false;
+
+
+}
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+function resetSlide() {
+
+
+  currentStep =
+    1;
+
+
+  gsap.killTweensOf(
+    [
+      "#heading",
+      "#shortMessage",
+      "#article",
+      "#dataLabel",
+      "#extractArrow",
+      "#structuredCard",
+      ".field",
+      "#takeaway",
+      "#eventText",
+      "#locationText",
+      "#incidentText",
+      "#impactText"
+    ]
+  );
+
+
+  initialEntrance();
+
+
+}
+
+
+/* =========================================================
+   START
+========================================================= */
+
+initialEntrance();
+
+
+/* =========================================================
+   CLICK ADVANCES
+========================================================= */
+
+document.addEventListener(
+  "click",
+  () => {
+
+
+    nextStep();
+
+
+  }
+);
+
+
+/* =========================================================
+   KEYBOARD
+========================================================= */
+
+document.addEventListener(
+  "keydown",
+  event => {
+
+
+    /* =====================================================
+       RIGHT ARROW / SPACE
+       ADVANCE
+    ===================================================== */
+
+    if (
+      event.key === "ArrowRight"
+      ||
+      event.key === " "
+    ) {
+
+
+      event.preventDefault();
+
+
+      nextStep();
+
+
+      return;
+
+
+    }
+
+
+    /* =====================================================
+       LEFT ARROW
+       GO BACK ONE INTERNAL ANIMATION STEP
+    ===================================================== */
+
+    if (
+      event.key === "ArrowLeft"
+    ) {
+
+
+      event.preventDefault();
+
+
+      previousStep();
+
+
+      return;
+
+
+    }
+
+
+    /* =====================================================
+       F = FULLSCREEN
+    ===================================================== */
+
+    if (
+      event.key.toLowerCase()
+      === "f"
+    ) {
+
+
+      if (
+        !document.fullscreenElement
+      ) {
+
+
+        document
+          .documentElement
+          .requestFullscreen();
+
+
+      }
+
+      else {
+
+
+        document
+          .exitFullscreen();
+
+
+      }
+
+
+      return;
+
+
+    }
+
+
+    /* =====================================================
+       R = RESET
+    ===================================================== */
+
+    if (
+      event.key.toLowerCase()
+      === "r"
+    ) {
+
+
+      resetSlide();
+
+
+      return;
+
+
+    }
+
+
+  }
+);
+
+</script>
+
+
+</body>
+
+</html>

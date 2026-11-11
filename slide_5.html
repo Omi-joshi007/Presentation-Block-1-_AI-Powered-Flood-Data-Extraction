@@ -1,0 +1,2394 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8" />
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+/>
+
+<title>
+  AI-Powered Flood Data Extraction — Dashboard Application
+</title>
+
+<link
+  href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+  rel="stylesheet"
+/>
+
+
+<style>
+
+/* =========================================================
+   ROOT / GLOBAL
+========================================================= */
+
+:root {
+
+  --bg:
+    #03101a;
+
+  --cyan:
+    #78dfff;
+
+  --cyan2:
+    #8bdfff;
+
+  --muted:
+    rgba(226,242,249,.62);
+
+  --border:
+    rgba(120,223,255,.18);
+
+  --panel:
+    rgba(6,20,28,.82);
+
+}
+
+
+* {
+
+  box-sizing:
+    border-box;
+
+}
+
+
+html,
+body {
+
+  width:
+    100%;
+
+  height:
+    100%;
+
+  margin:
+    0;
+
+  overflow:
+    hidden;
+
+  background:
+    var(--bg);
+
+  color:
+    white;
+
+  font-family:
+    "Inter",
+    sans-serif;
+
+}
+
+
+/* =========================================================
+   SLIDE
+========================================================= */
+
+.slide {
+
+  position:
+    relative;
+
+  width:
+    100vw;
+
+  height:
+    100vh;
+
+  overflow:
+    hidden;
+
+  background:
+
+    radial-gradient(
+      circle at 50% 87%,
+      rgba(31,140,180,.15),
+      transparent 36%
+    ),
+
+    radial-gradient(
+      circle at 52% 42%,
+      rgba(35,127,163,.08),
+      transparent 28%
+    ),
+
+    linear-gradient(
+      180deg,
+      #07131e 0%,
+      #071923 48%,
+      #06151d 100%
+    );
+
+}
+
+
+/* =========================================================
+   GRID
+========================================================= */
+
+.grid {
+
+  position:
+    absolute;
+
+  inset:
+    0;
+
+  z-index:
+    1;
+
+  opacity:
+    .07;
+
+  background-image:
+
+    linear-gradient(
+      rgba(130,210,235,.16) 1px,
+      transparent 1px
+    ),
+
+    linear-gradient(
+      90deg,
+      rgba(130,210,235,.16) 1px,
+      transparent 1px
+    );
+
+  background-size:
+    48px 48px;
+
+}
+
+
+/* =========================================================
+   GLOW
+========================================================= */
+
+.sky-glow {
+
+  position:
+    absolute;
+
+  width:
+    650px;
+
+  height:
+    320px;
+
+  right:
+    -160px;
+
+  top:
+    -90px;
+
+  z-index:
+    2;
+
+  border-radius:
+    50%;
+
+  background:
+    rgba(105,195,225,.09);
+
+  filter:
+    blur(100px);
+
+}
+
+
+/* =========================================================
+   VIGNETTE
+========================================================= */
+
+.vignette {
+
+  position:
+    absolute;
+
+  inset:
+    0;
+
+  z-index:
+    7;
+
+  pointer-events:
+    none;
+
+  background:
+
+    linear-gradient(
+      90deg,
+      rgba(0,0,0,.18),
+      transparent 45%,
+      rgba(0,0,0,.10)
+    ),
+
+    radial-gradient(
+      circle at center,
+      transparent 53%,
+      rgba(0,0,0,.27)
+    );
+
+}
+
+
+/* =========================================================
+   RAIN
+========================================================= */
+
+.rain {
+
+  position:
+    absolute;
+
+  inset:
+    0;
+
+  z-index:
+    4;
+
+  overflow:
+    hidden;
+
+  pointer-events:
+    none;
+
+}
+
+
+.rain-drop {
+
+  position:
+    absolute;
+
+  top:
+    -15vh;
+
+  width:
+    1px;
+
+  height:
+    48px;
+
+  opacity:
+    .18;
+
+  transform:
+    rotate(8deg);
+
+  background:
+
+    linear-gradient(
+      transparent,
+      rgba(210,240,255,.48)
+    );
+
+}
+
+
+/* =========================================================
+   WATER
+========================================================= */
+
+.water {
+
+  position:
+    absolute;
+
+  z-index:
+    5;
+
+  left:
+    0;
+
+  right:
+    0;
+
+  bottom:
+    0;
+
+  height:
+    10vh;
+
+  overflow:
+    hidden;
+
+  background:
+
+    linear-gradient(
+      180deg,
+      rgba(50,145,185,.22),
+      rgba(5,48,75,.70)
+    );
+
+}
+
+
+.wave {
+
+  position:
+    absolute;
+
+  left:
+    -8%;
+
+  top:
+    -22px;
+
+  width:
+    116%;
+
+  height:
+    60px;
+
+}
+
+
+.wave svg {
+
+  width:
+    100%;
+
+  height:
+    100%;
+
+}
+
+
+/* =========================================================
+   CONTENT
+========================================================= */
+
+.content {
+
+  position:
+    absolute;
+
+  z-index:
+    20;
+
+  inset:
+    0;
+
+  padding:
+
+    clamp(28px,4.5vh,52px)
+
+    clamp(38px,5.5vw,95px)
+
+    clamp(74px,9vh,98px);
+
+}
+
+
+/* =========================================================
+   TOP BAR
+========================================================= */
+
+.topbar {
+
+  display:
+    flex;
+
+  justify-content:
+    space-between;
+
+  align-items:
+    center;
+
+}
+
+
+.kicker {
+
+  color:
+    var(--cyan2);
+
+  font-size:
+    clamp(10px,.82vw,13px);
+
+  font-weight:
+    800;
+
+  letter-spacing:
+    .20em;
+
+  text-transform:
+    uppercase;
+
+}
+
+
+.brand {
+
+  color:
+    rgba(255,255,255,.30);
+
+  font-size:
+    clamp(9px,.72vw,11px);
+
+  letter-spacing:
+    .15em;
+
+}
+
+
+/* =========================================================
+   HEADING
+========================================================= */
+
+.heading-row {
+
+  margin-top:
+    clamp(15px,2.4vh,26px);
+
+  display:
+    flex;
+
+  align-items:
+    flex-end;
+
+  justify-content:
+    space-between;
+
+  gap:
+    40px;
+
+}
+
+
+.heading {
+
+  opacity:
+    0;
+
+  transform:
+    translateY(20px);
+
+}
+
+
+.heading-label {
+
+  margin-bottom:
+    8px;
+
+  color:
+    rgba(220,241,250,.48);
+
+  font-size:
+    clamp(9px,.72vw,11px);
+
+  font-weight:
+    700;
+
+  letter-spacing:
+    .12em;
+
+  text-transform:
+    uppercase;
+
+}
+
+
+h1 {
+
+  margin:
+    0;
+
+  font-size:
+    clamp(32px,4.1vw,62px);
+
+  line-height:
+    1.02;
+
+  letter-spacing:
+    -.042em;
+
+  font-weight:
+    900;
+
+}
+
+
+.accent {
+
+  color:
+    var(--cyan);
+
+}
+
+
+.heading-note {
+
+  opacity:
+    0;
+
+  max-width:
+    355px;
+
+  color:
+    var(--muted);
+
+  font-size:
+    clamp(11px,.85vw,13px);
+
+  line-height:
+    1.48;
+
+}
+
+
+/* =========================================================
+   DASHBOARD SHOWCASE
+========================================================= */
+
+.dashboard-showcase {
+
+  position:
+    relative;
+
+  margin-top:
+    clamp(18px,2.8vh,30px);
+
+  height:
+    clamp(490px,62vh,650px);
+
+  display:
+    grid;
+
+  /*
+     TWO LARGE COLUMNS
+  */
+
+  grid-template-columns:
+    repeat(2,1fr);
+
+  gap:
+    clamp(20px,2vw,36px);
+
+  align-items:
+    center;
+
+}
+
+
+/* =========================================================
+   DASHBOARD CARD
+========================================================= */
+
+.dashboard-card {
+
+  position:
+    relative;
+
+  opacity:
+    0;
+
+  transform:
+    translateY(25px)
+    scale(.97);
+
+  overflow:
+    hidden;
+
+  width:
+    100%;
+
+  min-height:
+    490px;
+
+  border-radius:
+    22px;
+
+  border:
+    1px solid
+    rgba(120,223,255,.14);
+
+  background:
+    rgba(6,20,28,.85);
+
+  box-shadow:
+
+    0 22px 60px
+    rgba(0,0,0,.25),
+
+    inset 0 1px
+    rgba(255,255,255,.04);
+
+  backdrop-filter:
+    blur(14px);
+
+  transform-origin:
+    center center;
+
+}
+
+
+/* =========================================================
+   CARD TOP
+========================================================= */
+
+.card-top {
+
+  height:
+    54px;
+
+  padding:
+    0 18px;
+
+  display:
+    flex;
+
+  justify-content:
+    space-between;
+
+  align-items:
+    center;
+
+  background:
+    rgba(255,255,255,.035);
+
+  border-bottom:
+    1px solid
+    rgba(255,255,255,.055);
+
+}
+
+
+.card-number {
+
+  display:
+    inline-flex;
+
+  justify-content:
+    center;
+
+  align-items:
+    center;
+
+  min-width:
+    64px;
+
+  height:
+    28px;
+
+  padding:
+    0 10px;
+
+  border-radius:
+    999px;
+
+  background:
+    rgba(120,223,255,.10);
+
+  border:
+    1px solid
+    rgba(120,223,255,.23);
+
+  color:
+    var(--cyan2);
+
+  font-size:
+    10px;
+
+  font-weight:
+    800;
+
+  letter-spacing:
+    .08em;
+
+  text-transform:
+    uppercase;
+
+}
+
+
+.card-type {
+
+  color:
+    rgba(255,255,255,.33);
+
+  font-size:
+    clamp(8px,.58vw,10px);
+
+  font-weight:
+    700;
+
+  letter-spacing:
+    .10em;
+
+}
+
+
+/* =========================================================
+   SCREENSHOT
+========================================================= */
+
+.screenshot-wrap {
+
+  position:
+    relative;
+
+  width:
+    100%;
+
+  /*
+     MORE SPACE FOR SCREENSHOTS
+  */
+
+  height:
+    clamp(300px,39vh,400px);
+
+  overflow:
+    hidden;
+
+  background:
+    #071017;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+}
+
+
+/*
+   IMPORTANT:
+
+   contain instead of cover means
+   the WHOLE screenshot is visible.
+*/
+
+.screenshot-wrap img {
+
+  display:
+    block;
+
+  width:
+    100%;
+
+  height:
+    100%;
+
+  object-fit:
+    contain;
+
+  object-position:
+    center center;
+
+}
+
+
+/* subtle image fade */
+
+.screenshot-wrap::after {
+
+  content:
+    "";
+
+  position:
+    absolute;
+
+  inset:
+    0;
+
+  pointer-events:
+    none;
+
+  background:
+
+    linear-gradient(
+      180deg,
+      transparent 84%,
+      rgba(3,16,26,.18)
+    );
+
+}
+
+
+/* =========================================================
+   CARD TEXT
+========================================================= */
+
+.card-content {
+
+  padding:
+    15px 18px 18px;
+
+}
+
+
+.card-title {
+
+  color:
+    white;
+
+  font-size:
+    clamp(16px,1.2vw,20px);
+
+  font-weight:
+    800;
+
+  line-height:
+    1.2;
+
+}
+
+
+.card-description {
+
+  margin-top:
+    7px;
+
+  color:
+    rgba(225,241,248,.57);
+
+  font-size:
+    clamp(10px,.73vw,12px);
+
+  line-height:
+    1.45;
+
+}
+
+
+/* =========================================================
+   FEATURE TAGS
+========================================================= */
+
+.features {
+
+  display:
+    flex;
+
+  flex-wrap:
+    wrap;
+
+  gap:
+    6px;
+
+  margin-top:
+    11px;
+
+}
+
+
+.feature {
+
+  padding:
+    5px 8px;
+
+  border-radius:
+    999px;
+
+  border:
+    1px solid
+    rgba(120,223,255,.13);
+
+  background:
+    rgba(120,223,255,.06);
+
+  color:
+    rgba(184,232,249,.76);
+
+  font-size:
+    clamp(7px,.53vw,9px);
+
+  font-weight:
+    700;
+
+  letter-spacing:
+    .04em;
+
+}
+
+
+/* =========================================================
+   FINAL SUMMARY
+========================================================= */
+
+.final-summary {
+
+  opacity:
+    0;
+
+  position:
+    absolute;
+
+  left:
+    50%;
+
+  bottom:
+    clamp(7px,1vh,12px);
+
+  transform:
+    translateX(-50%)
+    translateY(8px);
+
+  z-index:
+    40;
+
+  width:
+    min(86vw,1240px);
+
+  padding:
+    10px 16px;
+
+  border-radius:
+    999px;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  gap:
+    11px;
+
+  background:
+    rgba(5,23,32,.94);
+
+  border:
+    1px solid
+    rgba(120,223,255,.19);
+
+  box-shadow:
+
+    0 8px 30px
+    rgba(0,0,0,.25);
+
+  color:
+    rgba(227,244,251,.66);
+
+  font-size:
+    clamp(9px,.69vw,11px);
+
+  white-space:
+    nowrap;
+
+  backdrop-filter:
+    blur(10px);
+
+}
+
+
+.final-summary strong {
+
+  color:
+    white;
+
+}
+
+
+.final-dot {
+
+  width:
+    8px;
+
+  height:
+    8px;
+
+  flex:
+    0 0 8px;
+
+  border-radius:
+    50%;
+
+  background:
+    var(--cyan);
+
+  box-shadow:
+
+    0 0 14px
+    rgba(120,223,255,.70);
+
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width:1100px) {
+
+  .dashboard-showcase {
+
+    gap:
+      14px;
+
+  }
+
+
+  .dashboard-card {
+
+    min-height:
+      455px;
+
+  }
+
+
+  .screenshot-wrap {
+
+    height:
+      clamp(270px,37vh,360px);
+
+  }
+
+
+  .card-content {
+
+    padding:
+      12px 14px 15px;
+
+  }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="slide">
+
+
+<!-- =====================================================
+     BACKGROUND
+===================================================== -->
+
+<div class="grid"></div>
+
+<div class="sky-glow"></div>
+
+
+<div
+  class="rain"
+  id="rain"
+></div>
+
+
+<div class="vignette"></div>
+
+
+<div class="water">
+
+
+<div class="wave">
+
+
+<svg
+  viewBox="0 0 1600 80"
+  preserveAspectRatio="none"
+>
+
+
+<path
+
+  d="
+    M0,40
+    C160,0 320,80 480,40
+    C640,0 800,80 960,40
+    C1120,0 1280,80 1440,40
+    C1510,22 1560,25 1600,40
+    L1600,80
+    L0,80
+    Z
+  "
+
+  fill="rgba(82,183,222,.52)"
+
+/>
+
+
+</svg>
+
+
+</div>
+
+
+</div>
+
+
+<!-- =====================================================
+     CONTENT
+===================================================== -->
+
+<div class="content">
+
+
+<!-- TOP BAR -->
+
+<div class="topbar">
+
+
+<div class="kicker">
+
+  Applying The Dataset
+
+</div>
+
+
+<div class="brand">
+
+  AI-POWERED FLOOD DATA EXTRACTION
+
+</div>
+
+
+</div>
+
+
+<!-- =====================================================
+     HEADING
+===================================================== -->
+
+<div class="heading-row">
+
+
+<div
+  class="heading"
+  id="heading"
+>
+
+
+<div class="heading-label">
+
+  From database to application
+
+</div>
+
+
+<h1>
+
+  Turning the dataset into
+
+  <span class="accent">
+
+    usable flood intelligence.
+
+  </span>
+
+</h1>
+
+
+</div>
+
+
+<div
+  class="heading-note"
+  id="headingNote"
+>
+
+  The dashboard makes the structured database
+  explorable through filters, maps,
+  evidence and national-level insights.
+
+</div>
+
+
+</div>
+
+
+<!-- =====================================================
+     DASHBOARD CARDS
+===================================================== -->
+
+<div class="dashboard-showcase">
+
+
+<!-- ===================================================
+     VIEW 1
+=================================================== -->
+
+<div
+  class="dashboard-card"
+  id="dashboard1"
+>
+
+
+<div class="card-top">
+
+
+<div class="card-number">
+
+  View 1
+
+</div>
+
+
+<div class="card-type">
+
+  NATIONAL OVERVIEW
+
+</div>
+
+
+</div>
+
+
+<div class="screenshot-wrap">
+
+
+<img
+  src="image_dash_1.png"
+  alt="Flood Intelligence Dashboard national overview"
+/>
+
+
+</div>
+
+
+<div class="card-content">
+
+
+<div class="card-title">
+
+  Explore the national picture
+
+</div>
+
+
+<div class="card-description">
+
+  Filter flood events by year, region and impact category,
+  then immediately see event and impact summaries.
+
+</div>
+
+
+<div class="features">
+
+
+<div class="feature">
+
+  EVENT FILTERS
+
+</div>
+
+
+<div class="feature">
+
+  34 EVENTS
+
+</div>
+
+
+<div class="feature">
+
+  358 IMPACTS
+
+</div>
+
+
+<div class="feature">
+
+  POLICY VIEW
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+<!-- ===================================================
+     VIEW 2
+=================================================== -->
+
+<div
+  class="dashboard-card"
+  id="dashboard2"
+>
+
+
+<div class="card-top">
+
+
+<div class="card-number">
+
+  View 2
+
+</div>
+
+
+<div class="card-type">
+
+  SPATIAL INTELLIGENCE
+
+</div>
+
+
+</div>
+
+
+<div class="screenshot-wrap">
+
+
+<img
+  src="image_dash_3.png"
+  alt="Flood Intelligence Dashboard impact hotspot map"
+/>
+
+
+</div>
+
+
+<div class="card-content">
+
+
+<div class="card-title">
+
+  See where impacts occurred
+
+</div>
+
+
+<div class="card-description">
+
+  Extracted impact locations are transformed into a
+  national hotspot map for spatial exploration.
+
+</div>
+
+
+<div class="features">
+
+
+<div class="feature">
+
+  HOTSPOT MAP
+
+</div>
+
+
+<div class="feature">
+
+  337 MAPPED IMPACTS
+
+</div>
+
+
+<div class="feature">
+
+  IMPACT CATEGORY
+
+</div>
+
+
+<div class="feature">
+
+  LOCATION EVIDENCE
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+<!-- =====================================================
+     FINAL SUMMARY
+===================================================== -->
+
+<div
+  class="final-summary"
+  id="finalSummary"
+>
+
+
+<div class="final-dot"></div>
+
+
+<div>
+
+  <strong>
+
+    Structured flood database
+
+  </strong>
+
+  →
+
+  filter & compare →
+
+  <strong>
+
+    map impacts
+
+  </strong>
+
+  →
+
+  identify hotspots →
+
+  <strong>
+
+    usable flood intelligence
+
+  </strong>
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+<!-- =====================================================
+     GSAP
+===================================================== -->
+
+<script
+  src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"
+></script>
+
+
+<script>
+
+/* =========================================================
+   RAIN
+========================================================= */
+
+const rain =
+  document.getElementById(
+    "rain"
+  );
+
+
+for (
+  let i = 0;
+  i < 55;
+  i++
+) {
+
+
+  const drop =
+    document.createElement(
+      "div"
+    );
+
+
+  drop.className =
+    "rain-drop";
+
+
+  drop.style.left =
+    Math.random()
+    * 105
+    + "%";
+
+
+  drop.style.height =
+    (
+      20
+      +
+      Math.random()
+      * 45
+    )
+    + "px";
+
+
+  drop.style.opacity =
+    .08
+    +
+    Math.random()
+    * .22;
+
+
+  rain.appendChild(
+    drop
+  );
+
+
+  gsap.to(
+    drop,
+    {
+
+      y:
+        window.innerHeight
+        * 1.35,
+
+      x:
+        60,
+
+      duration:
+        .9
+        +
+        Math.random()
+        * .8,
+
+      delay:
+        Math.random()
+        * 1.8,
+
+      repeat:
+        -1,
+
+      ease:
+        "none"
+
+    }
+  );
+
+
+}
+
+
+/* =========================================================
+   WATER
+========================================================= */
+
+gsap.to(
+  ".wave",
+  {
+
+    x:
+      -85,
+
+    duration:
+      3.2,
+
+    repeat:
+      -1,
+
+    yoyo:
+      true,
+
+    ease:
+      "sine.inOut"
+
+  }
+);
+
+
+/* =========================================================
+   STEP STATE
+
+   STEP 1 = NATIONAL OVERVIEW
+   STEP 2 = HOTSPOT MAP
+   STEP 3 = COMPLETE APPLICATION
+========================================================= */
+
+let currentStep =
+  1;
+
+
+const MAX_STEP =
+  3;
+
+
+/* =========================================================
+   VISUAL STATES
+========================================================= */
+
+const NORMAL_BORDER =
+  "rgba(120,223,255,.14)";
+
+
+const ACTIVE_BORDER =
+  "rgba(120,223,255,.62)";
+
+
+const NORMAL_SHADOW =
+  "0 22px 60px rgba(0,0,0,.25), inset 0 1px rgba(255,255,255,.04)";
+
+
+const ACTIVE_SHADOW =
+  "0 0 0 1px rgba(120,223,255,.28), 0 34px 95px rgba(22,140,185,.30), inset 0 1px rgba(255,255,255,.07)";
+
+
+/* =========================================================
+   FOCUS CARD
+========================================================= */
+
+function focusCard(
+  selector
+) {
+
+
+  gsap.to(
+    selector,
+    {
+
+      scale:
+        1.025,
+
+      borderColor:
+        ACTIVE_BORDER,
+
+      boxShadow:
+        ACTIVE_SHADOW,
+
+      zIndex:
+        15,
+
+      duration:
+        .48,
+
+      ease:
+        "power3.out"
+
+    }
+  );
+
+
+}
+
+
+/* =========================================================
+   NORMALISE CARD
+========================================================= */
+
+function normaliseCard(
+  selector
+) {
+
+
+  gsap.to(
+    selector,
+    {
+
+      scale:
+        1,
+
+      borderColor:
+        NORMAL_BORDER,
+
+      boxShadow:
+        NORMAL_SHADOW,
+
+      zIndex:
+        1,
+
+      duration:
+        .40,
+
+      ease:
+        "power3.out"
+
+    }
+  );
+
+
+}
+
+
+/* =========================================================
+   INITIAL ENTRANCE
+========================================================= */
+
+function initialEntrance() {
+
+
+  gsap.set(
+    "#heading",
+    {
+
+      opacity:
+        0,
+
+      y:
+        20
+
+    }
+  );
+
+
+  gsap.set(
+    "#headingNote",
+    {
+
+      opacity:
+        0,
+
+      y:
+        12
+
+    }
+  );
+
+
+  gsap.set(
+    [
+      "#dashboard1",
+      "#dashboard2"
+    ],
+    {
+
+      opacity:
+        0,
+
+      y:
+        25,
+
+      scale:
+        .97,
+
+      borderColor:
+        NORMAL_BORDER,
+
+      boxShadow:
+        NORMAL_SHADOW
+
+    }
+  );
+
+
+  gsap.set(
+    "#finalSummary",
+    {
+
+      opacity:
+        0,
+
+      y:
+        8
+
+    }
+  );
+
+
+  const tl =
+    gsap.timeline();
+
+
+  tl.to(
+    "#heading",
+    {
+
+      opacity:
+        1,
+
+      y:
+        0,
+
+      duration:
+        .75,
+
+      ease:
+        "power3.out"
+
+    },
+    .10
+  );
+
+
+  tl.to(
+    "#headingNote",
+    {
+
+      opacity:
+        1,
+
+      y:
+        0,
+
+      duration:
+        .45
+
+    },
+    .42
+  );
+
+
+  /*
+     STEP 1
+
+     National overview appears first.
+  */
+
+  tl.to(
+    "#dashboard1",
+    {
+
+      opacity:
+        1,
+
+      y:
+        0,
+
+      scale:
+        1,
+
+      duration:
+        .65,
+
+      ease:
+        "power3.out"
+
+    },
+    .62
+  );
+
+
+  /*
+     Highlight View 1.
+  */
+
+  tl.to(
+    "#dashboard1",
+    {
+
+      scale:
+        1.025,
+
+      borderColor:
+        ACTIVE_BORDER,
+
+      boxShadow:
+        ACTIVE_SHADOW,
+
+      zIndex:
+        15,
+
+      duration:
+        .48,
+
+      ease:
+        "power3.out"
+
+    },
+    1.10
+  );
+
+
+}
+
+
+/* =========================================================
+   STEP 2
+   HOTSPOT MAP
+========================================================= */
+
+function showDashboard2() {
+
+
+  /*
+     View 1 remains visible but returns to normal.
+  */
+
+  normaliseCard(
+    "#dashboard1"
+  );
+
+
+  const tl =
+    gsap.timeline();
+
+
+  /*
+     View 2 appears.
+  */
+
+  tl.to(
+    "#dashboard2",
+    {
+
+      opacity:
+        1,
+
+      y:
+        0,
+
+      scale:
+        1,
+
+      duration:
+        .65,
+
+      ease:
+        "power3.out"
+
+    }
+  );
+
+
+  /*
+     View 2 becomes focus.
+  */
+
+  tl.to(
+    "#dashboard2",
+    {
+
+      scale:
+        1.025,
+
+      borderColor:
+        ACTIVE_BORDER,
+
+      boxShadow:
+        ACTIVE_SHADOW,
+
+      zIndex:
+        15,
+
+      duration:
+        .48,
+
+      ease:
+        "power3.out"
+
+    },
+    .48
+  );
+
+
+}
+
+
+/* =========================================================
+   BACK FROM STEP 2 → STEP 1
+========================================================= */
+
+function hideDashboard2() {
+
+
+  normaliseCard(
+    "#dashboard2"
+  );
+
+
+  focusCard(
+    "#dashboard1"
+  );
+
+
+  gsap.to(
+    "#dashboard2",
+    {
+
+      opacity:
+        0,
+
+      y:
+        25,
+
+      scale:
+        .97,
+
+      duration:
+        .38
+
+    }
+  );
+
+
+}
+
+
+/* =========================================================
+   STEP 3
+   COMPLETE APPLICATION
+========================================================= */
+
+function showFinalSummary() {
+
+
+  /*
+     Remove individual focus.
+
+     Both views now represent one application.
+  */
+
+  normaliseCard(
+    "#dashboard2"
+  );
+
+
+  gsap.to(
+    [
+      "#dashboard1",
+      "#dashboard2"
+    ],
+    {
+
+      borderColor:
+        "rgba(120,223,255,.25)",
+
+      boxShadow:
+        "0 24px 65px rgba(0,0,0,.25)",
+
+      duration:
+        .38
+
+    }
+  );
+
+
+  /*
+     Show final message.
+  */
+
+  gsap.to(
+    "#finalSummary",
+    {
+
+      opacity:
+        1,
+
+      y:
+        0,
+
+      duration:
+        .50,
+
+      ease:
+        "power3.out"
+
+    }
+  );
+
+
+}
+
+
+/* =========================================================
+   BACK FROM STEP 3 → STEP 2
+========================================================= */
+
+function hideFinalSummary() {
+
+
+  gsap.to(
+    "#finalSummary",
+    {
+
+      opacity:
+        0,
+
+      y:
+        8,
+
+      duration:
+        .28
+
+    }
+  );
+
+
+  /*
+     Return focus to View 2.
+  */
+
+  focusCard(
+    "#dashboard2"
+  );
+
+
+}
+
+
+/* =========================================================
+   NEXT STEP
+========================================================= */
+
+function nextStep() {
+
+
+  /* STEP 1 → STEP 2 */
+
+  if (
+    currentStep === 1
+  ) {
+
+
+    currentStep =
+      2;
+
+
+    showDashboard2();
+
+
+    return true;
+
+
+  }
+
+
+  /* STEP 2 → STEP 3 */
+
+  if (
+    currentStep === 2
+  ) {
+
+
+    currentStep =
+      3;
+
+
+    showFinalSummary();
+
+
+    return true;
+
+
+  }
+
+
+  /*
+     Already final step.
+     presentation.html may go to next slide.
+  */
+
+  return false;
+
+
+}
+
+
+/* =========================================================
+   PREVIOUS STEP
+========================================================= */
+
+function previousStep() {
+
+
+  /* STEP 3 → STEP 2 */
+
+  if (
+    currentStep === 3
+  ) {
+
+
+    currentStep =
+      2;
+
+
+    hideFinalSummary();
+
+
+    return true;
+
+
+  }
+
+
+  /* STEP 2 → STEP 1 */
+
+  if (
+    currentStep === 2
+  ) {
+
+
+    currentStep =
+      1;
+
+
+    hideDashboard2();
+
+
+    return true;
+
+
+  }
+
+
+  /*
+     Already at first state.
+     presentation.html may move back to Slide 4.
+  */
+
+  return false;
+
+
+}
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+function resetSlide() {
+
+
+  currentStep =
+    1;
+
+
+  gsap.killTweensOf(
+    [
+      "#heading",
+      "#headingNote",
+      "#dashboard1",
+      "#dashboard2",
+      "#finalSummary"
+    ]
+  );
+
+
+  initialEntrance();
+
+
+}
+
+
+/* =========================================================
+   START
+========================================================= */
+
+initialEntrance();
+
+
+/* =========================================================
+   CLICK = FORWARD
+========================================================= */
+
+document.addEventListener(
+  "click",
+  () => {
+
+
+    nextStep();
+
+
+  }
+);
+
+
+/* =========================================================
+   KEYBOARD
+========================================================= */
+
+document.addEventListener(
+  "keydown",
+  event => {
+
+
+    /* RIGHT / SPACE */
+
+    if (
+      event.key === "ArrowRight"
+      ||
+      event.key === " "
+    ) {
+
+
+      event.preventDefault();
+
+
+      nextStep();
+
+
+      return;
+
+
+    }
+
+
+    /* LEFT */
+
+    if (
+      event.key === "ArrowLeft"
+    ) {
+
+
+      event.preventDefault();
+
+
+      previousStep();
+
+
+      return;
+
+
+    }
+
+
+    /* FULLSCREEN */
+
+    if (
+      event.key.toLowerCase()
+      === "f"
+    ) {
+
+
+      if (
+        !document.fullscreenElement
+      ) {
+
+
+        document
+          .documentElement
+          .requestFullscreen();
+
+
+      }
+
+      else {
+
+
+        document
+          .exitFullscreen();
+
+
+      }
+
+
+      return;
+
+
+    }
+
+
+    /* RESET */
+
+    if (
+      event.key.toLowerCase()
+      === "r"
+    ) {
+
+
+      resetSlide();
+
+
+      return;
+
+
+    }
+
+
+  }
+);
+
+</script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,1673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+/>
+
+<title>Flood Intelligence System — Introduction</title>
+
+<link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet"
+/>
+
+<style>
+
+/* =========================================================
+   GLOBAL
+========================================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+    background: #03101a;
+    font-family: "Inter", sans-serif;
+}
+
+body {
+    color: white;
+}
+
+
+/* =========================================================
+   SLIDE
+========================================================= */
+
+.slide {
+    position: relative;
+
+    width: 100vw;
+    height: 100vh;
+
+    overflow: hidden;
+
+    background:
+        radial-gradient(
+            circle at 50% 85%,
+            rgba(31, 140, 180, .18),
+            transparent 35%
+        ),
+        linear-gradient(
+            180deg,
+            #07131e 0%,
+            #071923 48%,
+            #06151d 100%
+        );
+}
+
+
+/* =========================================================
+   SVG ENVIRONMENT
+========================================================= */
+
+.environment {
+    position: absolute;
+
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    z-index: 1;
+}
+
+
+/* =========================================================
+   SKY
+========================================================= */
+
+.sky-glow {
+    opacity: .18;
+}
+
+
+/* =========================================================
+   RAIN
+========================================================= */
+
+.rain {
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 5;
+
+    overflow: hidden;
+
+    pointer-events: none;
+}
+
+.rain-drop {
+    position: absolute;
+
+    top: -15vh;
+
+    width: 1px;
+
+    height: 55px;
+
+    background:
+        linear-gradient(
+            transparent,
+            rgba(205, 235, 255, .6)
+        );
+
+    opacity: .45;
+
+    transform: rotate(8deg);
+}
+
+
+/* =========================================================
+   LIGHTNING FLASH
+========================================================= */
+
+.lightning {
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 4;
+
+    background:
+        rgba(205, 235, 255, .14);
+
+    opacity: 0;
+
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   TITLE CONTENT
+========================================================= */
+
+.content {
+    position: absolute;
+
+    z-index: 20;
+
+    inset: 0;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    padding:
+        clamp(40px, 6vh, 80px)
+        clamp(42px, 7vw, 120px);
+
+    pointer-events: none;
+}
+
+
+.intro-label {
+    opacity: 0;
+
+    transform:
+        translateY(15px);
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    width: fit-content;
+
+    margin-bottom: 18px;
+
+    padding:
+        9px
+        14px;
+
+    border-radius:
+        999px;
+
+    border:
+        1px solid
+        rgba(129, 225, 255, .24);
+
+    background:
+        rgba(8, 28, 40, .66);
+
+    backdrop-filter:
+        blur(12px);
+
+    color:
+        #8bdfff;
+
+    font-size:
+        clamp(10px, .8vw, 13px);
+
+    font-weight:
+        700;
+
+    letter-spacing:
+        .12em;
+
+    text-transform:
+        uppercase;
+}
+
+
+.title {
+    opacity: 0;
+
+    transform:
+        translateY(35px);
+
+    margin: 0;
+
+    max-width:
+        min(1100px, 82vw);
+
+    font-size:
+        clamp(42px, 6vw, 92px);
+
+    line-height:
+        .98;
+
+    letter-spacing:
+        -.04em;
+
+    font-weight:
+        900;
+
+    text-shadow:
+        0 10px 40px
+        rgba(0, 0, 0, .4);
+}
+
+
+.title-highlight {
+    color:
+        #78dfff;
+}
+
+
+.subtitle {
+    opacity: 0;
+
+    transform:
+        translateY(20px);
+
+    margin-top:
+        20px;
+
+    max-width:
+        790px;
+
+    color:
+        rgba(232, 247, 255, .72);
+
+    font-size:
+        clamp(15px, 1.3vw, 20px);
+
+    line-height:
+        1.5;
+
+    font-weight:
+        500;
+}
+
+
+/* =========================================================
+   RESEARCHER / MENTORS
+========================================================= */
+
+.people {
+    opacity: 0;
+
+    transform:
+        translateY(15px);
+
+    margin-top:
+        clamp(24px, 3.4vh, 40px);
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap:
+        12px
+        28px;
+
+    color:
+        rgba(235, 247, 255, .70);
+
+    font-size:
+        clamp(15px, .95vw, 14px);
+
+    line-height:
+        2.5;
+
+    font-size: 20px;
+}
+
+.people strong {
+    color: white;
+}
+
+
+/* =========================================================
+   LOGOS
+========================================================= */
+
+.organisations {
+    opacity: 0;
+
+    transform:
+        translateY(12px);
+
+    position: absolute;
+
+    z-index: 25;
+
+    left:
+        clamp(42px, 7vw, 120px);
+
+    right:
+        clamp(42px, 7vw, 120px);
+
+    bottom:
+        clamp(24px, 4vh, 45px);
+
+    display: flex;
+
+    justify-content:
+        space-between;
+
+    align-items: flex-end;
+
+    gap: 30px;
+}
+
+
+.logo-group {
+    display: flex;
+
+    align-items: center;
+
+    gap: 14px;
+}
+
+
+.logo-card {
+    height:
+        clamp(55px, 5.5vh, 100px);
+    height:150px;
+    min-width:
+        100px;
+
+    max-width:
+        200px;
+
+    /*padding:
+        8px
+        13px;
+    */
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius:
+        14px;
+
+    border:
+        1px solid
+        rgba(255, 255, 255, .10);
+
+    background:
+        rgba(255, 255, 255, .92);
+
+    box-shadow:
+        0 14px 35px
+        rgba(0, 0, 0, .20);
+}
+
+
+.logo-card img {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit:
+        contain;
+}
+
+
+.funded-text {
+    color:
+        rgba(229, 244, 252, .65);
+
+    font-size:
+        clamp(9px, .75vw, 12px);
+
+    line-height:
+        1.35;
+
+    text-align: right;
+}
+
+.funded-text strong {
+    display: block;
+
+    margin-top: 3px;
+
+    color:
+        white;
+
+    font-size:
+        clamp(11px, .9vw, 14px);
+}
+
+
+/* =========================================================
+   WATER OVERLAY
+========================================================= */
+
+.water-front {
+    position: absolute;
+
+    z-index: 10;
+
+    left: 0;
+    right: 0;
+
+    bottom: 0;
+
+    height: 0%;
+
+    pointer-events: none;
+
+    overflow: hidden;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(42, 144, 186, .58),
+            rgba(8, 72, 110, .88)
+        );
+
+    box-shadow:
+        inset 0 12px 40px
+        rgba(130, 224, 255, .08);
+}
+
+
+.wave {
+    position: absolute;
+
+    top: -26px;
+
+    left: -10%;
+
+    width: 120%;
+
+    height: 55px;
+
+    opacity: .8;
+}
+
+
+.wave svg {
+    width: 100%;
+    height: 100%;
+}
+
+
+/* =========================================================
+   DEPTH SHADING
+========================================================= */
+
+.flood-darkening {
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 11;
+
+    pointer-events: none;
+
+    opacity: 0;
+
+    background:
+        linear-gradient(
+            180deg,
+            transparent 45%,
+            rgba(0, 30, 48, .18) 70%,
+            rgba(0, 20, 35, .38) 100%
+        );
+}
+
+
+/* =========================================================
+   VIGNETTE
+========================================================= */
+
+.vignette {
+    position: absolute;
+
+    z-index: 15;
+
+    inset: 0;
+
+    pointer-events: none;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(0, 0, 0, .45),
+            transparent 45%,
+            rgba(0, 0, 0, .12)
+        ),
+        radial-gradient(
+            circle at center,
+            transparent 48%,
+            rgba(0, 0, 0, .28)
+        );
+}
+
+
+/* =========================================================
+   SMALL CONTROLS
+========================================================= */
+
+.hint {
+    position: absolute;
+
+    z-index: 50;
+
+    top: 22px;
+    right: 26px;
+
+    color:
+        rgba(255, 255, 255, .30);
+
+    font-size:
+        10px;
+
+    letter-spacing:
+        .08em;
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<div
+    class="slide"
+    id="slide"
+>
+
+
+<!-- =====================================================
+     SVG FLOOD ENVIRONMENT
+===================================================== -->
+
+<svg
+    class="environment"
+    viewBox="0 0 1600 900"
+    preserveAspectRatio="xMidYMid slice"
+>
+
+
+<!-- sky -->
+
+<defs>
+
+    <linearGradient
+        id="sky"
+        x1="0"
+        x2="0"
+        y1="0"
+        y2="1"
+    >
+
+        <stop
+            offset="0%"
+            stop-color="#07131e"
+        />
+
+        <stop
+            offset="100%"
+            stop-color="#0b2531"
+        />
+
+    </linearGradient>
+
+
+    <linearGradient
+        id="ground"
+        x1="0"
+        x2="0"
+        y1="0"
+        y2="1"
+    >
+
+        <stop
+            offset="0%"
+            stop-color="#152c27"
+        />
+
+        <stop
+            offset="100%"
+            stop-color="#071815"
+        />
+
+    </linearGradient>
+
+
+    <filter
+        id="blur"
+    >
+
+        <feGaussianBlur
+            stdDeviation="45"
+        />
+
+    </filter>
+
+</defs>
+
+
+<rect
+    width="1600"
+    height="900"
+    fill="url(#sky)"
+/>
+
+
+<!-- cloud glow -->
+
+<ellipse
+    class="sky-glow"
+    cx="1250"
+    cy="140"
+    rx="370"
+    ry="130"
+    fill="#8bc7d7"
+    filter="url(#blur)"
+/>
+
+
+
+<!-- distant hills -->
+
+<path
+    d="
+        M0,525
+        C160,455 300,475 410,515
+        C560,565 710,470 850,495
+        C1040,530 1175,445 1320,470
+        C1430,485 1515,520 1600,500
+        L1600,900
+        L0,900
+        Z
+    "
+    fill="#0b201d"
+/>
+
+
+<!-- ground -->
+
+<path
+    d="
+        M0,650
+        C260,620 420,640 620,630
+        C820,620 1030,650 1210,620
+        C1380,590 1480,610 1600,600
+        L1600,900
+        L0,900
+        Z
+    "
+    fill="url(#ground)"
+/>
+
+
+
+<!-- road -->
+
+<path
+    d="
+        M0,725
+        C300,690 560,715 810,700
+        C1060,685 1330,700 1600,660
+    "
+    fill="none"
+    stroke="#263934"
+    stroke-width="54"
+/>
+
+
+
+<!-- =====================================================
+     HOUSES
+===================================================== -->
+
+
+<!-- house 1 -->
+
+<g
+    id="house1"
+    transform="translate(290 525)"
+>
+
+    <rect
+        x="0"
+        y="55"
+        width="150"
+        height="120"
+        rx="3"
+        fill="#162d2b"
+    />
+
+    <polygon
+        points="-15,60 75,0 165,60"
+        fill="#102321"
+    />
+
+    <rect
+        x="20"
+        y="90"
+        width="35"
+        height="35"
+        fill="#8eb5ae"
+        opacity=".45"
+    />
+
+    <rect
+        x="94"
+        y="90"
+        width="35"
+        height="35"
+        fill="#8eb5ae"
+        opacity=".35"
+    />
+
+    <rect
+        x="62"
+        y="120"
+        width="30"
+        height="55"
+        fill="#091716"
+    />
+
+</g>
+
+
+
+<!-- house 2 -->
+
+<g
+    id="house2"
+    transform="translate(1080 545)"
+>
+
+    <rect
+        x="0"
+        y="50"
+        width="170"
+        height="115"
+        rx="3"
+        fill="#17302d"
+    />
+
+    <polygon
+        points="-18,55 85,0 188,55"
+        fill="#102724"
+    />
+
+    <rect
+        x="25"
+        y="85"
+        width="38"
+        height="36"
+        fill="#9bc3b7"
+        opacity=".4"
+    />
+
+    <rect
+        x="110"
+        y="85"
+        width="38"
+        height="36"
+        fill="#9bc3b7"
+        opacity=".4"
+    />
+
+</g>
+
+
+
+<!-- =====================================================
+     TREES
+===================================================== -->
+
+<g
+    opacity=".75"
+>
+
+    <rect
+        x="550"
+        y="555"
+        width="12"
+        height="110"
+        fill="#091b18"
+    />
+
+    <circle
+        cx="556"
+        cy="535"
+        r="50"
+        fill="#15342e"
+    />
+
+
+    <rect
+        x="1350"
+        y="545"
+        width="12"
+        height="115"
+        fill="#091b18"
+    />
+
+    <circle
+        cx="1356"
+        cy="520"
+        r="55"
+        fill="#15342e"
+    />
+
+</g>
+
+
+</svg>
+
+
+
+<!-- =====================================================
+     RAIN
+===================================================== -->
+
+<div
+    class="rain"
+    id="rain"
+></div>
+
+
+
+<!-- =====================================================
+     LIGHTNING
+===================================================== -->
+
+<div
+    class="lightning"
+    id="lightning"
+></div>
+
+
+
+<!-- =====================================================
+     WATER FRONT
+===================================================== -->
+
+<div
+    class="water-front"
+    id="water"
+>
+
+
+<div
+    class="wave"
+>
+
+<svg
+    viewBox="0 0 1600 80"
+    preserveAspectRatio="none"
+>
+
+<path
+    d="
+        M0,40
+        C160,0 310,80 470,40
+        C630,0 790,80 950,40
+        C1110,0 1270,80 1430,40
+        C1510,20 1560,25 1600,40
+        L1600,80
+        L0,80
+        Z
+    "
+    fill="rgba(82,183,222,.74)"
+/>
+
+</svg>
+
+</div>
+
+
+</div>
+
+
+
+<div
+    class="flood-darkening"
+    id="floodDarkening"
+></div>
+
+
+
+<div
+    class="vignette"
+></div>
+
+
+
+<!-- =====================================================
+     PRESENTATION CONTENT
+===================================================== -->
+
+<div
+    class="content"
+>
+
+
+<div
+    class="intro-label"
+    id="introLabel"
+>
+
+    CRISiSLab Internship Research
+
+</div>
+
+
+
+<h1
+    class="title"
+    id="title"
+>
+
+    AI-Powered 
+    <br>
+
+    <span
+        class="title-highlight"
+    >
+        Flood Data Extraction
+    </span>
+
+</h1>
+
+
+
+<div
+    class="subtitle"
+    id="subtitle"
+>
+
+    Transforming scattered flood reporting into
+    structured, evidence-linked impact intelligence.
+
+</div>
+
+
+
+<div
+    class="people"
+    id="people"
+>
+
+    <div>
+        · Research Intern - 
+        <strong>
+            Omkar Joshi
+        </strong>
+
+        
+
+    </div>
+
+
+    <div>
+
+        Mentors -
+
+        <strong>
+            Dr. Raj Prasanna
+        
+
+        · Malintha MahindaKumarage
+        · Vajiranath Sudusinghe
+        </strong>
+
+    </div>
+
+</div>
+
+
+</div>
+
+
+
+<!-- =====================================================
+     ORGANISATIONS / FUNDING
+===================================================== -->
+
+<div
+    class="organisations"
+    id="organisations"
+>
+
+
+<!-- Crisis Lab -->
+
+<div
+    class="logo-group"
+>
+
+<div
+    class="logo-card"
+>
+
+<img
+    src="crisis-lab-logo.png"
+    alt="Crisis Lab Logo"
+/>
+
+</div>
+
+</div>
+
+
+
+<!-- NHC Funding -->
+
+<div
+    class="logo-group"
+>
+
+<div
+    class="funded-text"
+>
+
+    Research funded by
+
+    <strong>
+        Natural Hazards Commission
+    </strong>
+
+</div>
+
+
+<div
+    class="logo-card"
+>
+
+<img
+    src="natural-hazard-com-logo.png"
+    alt="Natural Hazards Commission Logo"
+/>
+
+</div>
+
+</div>
+
+
+</div>
+
+
+
+<div
+    class="hint"
+>
+
+    <!-- F · FULLSCREEN &nbsp;&nbsp; R · RESTART -->
+
+</div>
+
+
+</div>
+
+
+
+<!-- =====================================================
+     GSAP
+===================================================== -->
+
+<script
+    src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"
+></script>
+
+
+
+<script>
+
+/* =========================================================
+   CREATE RAIN
+========================================================= */
+
+const rainContainer =
+    document.getElementById("rain");
+
+
+const DROP_COUNT =
+    100;
+
+
+for (
+    let i = 0;
+    i < DROP_COUNT;
+    i++
+) {
+
+    const drop =
+        document.createElement("div");
+
+
+    drop.className =
+        "rain-drop";
+
+
+    drop.style.left =
+        Math.random() * 105 + "%";
+
+
+    drop.style.height =
+        25 +
+        Math.random() * 55 +
+        "px";
+
+
+    drop.style.opacity =
+        .15 +
+        Math.random() * .45;
+
+
+    rainContainer.appendChild(
+        drop
+    );
+
+
+    gsap.to(
+        drop,
+        {
+
+            y:
+                window.innerHeight * 1.35,
+
+            x:
+                80,
+
+            duration:
+                .75 +
+                Math.random() * .75,
+
+            delay:
+                Math.random() * 1.7,
+
+            repeat:
+                -1,
+
+            ease:
+                "none"
+
+        }
+    );
+
+}
+
+
+
+/* =========================================================
+   MAIN INTRO TIMELINE
+========================================================= */
+
+
+function playIntro() {
+
+
+    const timeline =
+        gsap.timeline();
+
+
+
+    /* Reset */
+
+    timeline.set(
+        "#water",
+        {
+            height:
+                "7%"
+        }
+    );
+
+
+    timeline.set(
+        [
+            "#introLabel",
+            "#title",
+            "#subtitle",
+            "#people",
+            "#organisations"
+        ],
+        {
+            opacity:
+                0
+        }
+    );
+
+
+    timeline.set(
+        "#floodDarkening",
+        {
+            opacity:
+                0
+        }
+    );
+
+
+
+    /* ---------------------------------------------
+       0 → 3 sec
+       flood rises
+    --------------------------------------------- */
+
+
+    timeline.to(
+        "#water",
+        {
+
+            height:
+                "43%",
+
+            duration:
+                3.4,
+
+            ease:
+                "power2.inOut"
+
+        },
+        .35
+    );
+
+
+
+    timeline.to(
+        "#floodDarkening",
+        {
+
+            opacity:
+                1,
+
+            duration:
+                2.5
+
+        },
+        1.3
+    );
+
+
+
+    /* House movement as water reaches them */
+
+    timeline.to(
+        "#house1",
+        {
+
+            y:
+                -4,
+
+            rotation:
+                -.7,
+
+            transformOrigin:
+                "center bottom",
+
+            duration:
+                1.5,
+
+            ease:
+                "sine.inOut"
+
+        },
+        2
+    );
+
+
+    timeline.to(
+        "#house2",
+        {
+
+            y:
+                -3,
+
+            rotation:
+                .5,
+
+            transformOrigin:
+                "center bottom",
+
+            duration:
+                1.5,
+
+            ease:
+                "sine.inOut"
+
+        },
+        2.2
+    );
+
+
+
+    /* ---------------------------------------------
+       Project identity appears
+    --------------------------------------------- */
+
+
+    timeline.to(
+        "#introLabel",
+        {
+
+            opacity:
+                1,
+
+            y:
+                0,
+
+            duration:
+                .55,
+
+            ease:
+                "power3.out"
+
+        },
+        3
+    );
+
+
+    timeline.to(
+        "#title",
+        {
+
+            opacity:
+                1,
+
+            y:
+                0,
+
+            duration:
+                .9,
+
+            ease:
+                "power3.out"
+
+        },
+        3.25
+    );
+
+
+    timeline.to(
+        "#subtitle",
+        {
+
+            opacity:
+                1,
+
+            y:
+                0,
+
+            duration:
+                .65,
+
+            ease:
+                "power3.out"
+
+        },
+        3.8
+    );
+
+
+    timeline.to(
+        "#people",
+        {
+
+            opacity:
+                1,
+
+            y:
+                0,
+
+            duration:
+                .6
+
+        },
+        4.25
+    );
+
+
+    timeline.to(
+        "#organisations",
+        {
+
+            opacity:
+                1,
+
+            y:
+                0,
+
+            duration:
+                .65
+
+        },
+        4.65
+    );
+
+
+
+    return timeline;
+
+}
+
+
+
+/* =========================================================
+   CONTINUOUS WATER MOTION
+========================================================= */
+
+
+gsap.to(
+    ".wave",
+    {
+
+        x:
+            -90,
+
+        duration:
+            2.8,
+
+        repeat:
+            -1,
+
+        yoyo:
+            true,
+
+        ease:
+            "sine.inOut"
+
+    }
+);
+
+
+
+gsap.to(
+    "#water",
+    {
+
+        backgroundPosition:
+            "0px 30px",
+
+        duration:
+            3,
+
+        repeat:
+            -1,
+
+        ease:
+            "none"
+
+    }
+);
+
+
+
+/* =========================================================
+   SUBTLE LIGHTNING
+========================================================= */
+
+
+function lightningFlash() {
+
+
+    const delay =
+        4500 +
+        Math.random() * 6500;
+
+
+    setTimeout(
+        () => {
+
+
+            gsap.timeline()
+
+            .to(
+                "#lightning",
+                {
+                    opacity:
+                        .7,
+
+                    duration:
+                        .06
+                }
+            )
+
+            .to(
+                "#lightning",
+                {
+                    opacity:
+                        0,
+
+                    duration:
+                        .13
+                }
+            )
+
+            .to(
+                "#lightning",
+                {
+                    opacity:
+                        .35,
+
+                    duration:
+                        .05
+                }
+            )
+
+            .to(
+                "#lightning",
+                {
+                    opacity:
+                        0,
+
+                    duration:
+                        .3
+                }
+            );
+
+
+            lightningFlash();
+
+        },
+        delay
+    );
+
+}
+
+
+lightningFlash();
+
+
+
+/* =========================================================
+   START
+========================================================= */
+
+
+let introTimeline =
+    playIntro();
+
+
+
+/* =========================================================
+   KEYBOARD CONTROLS
+========================================================= */
+
+
+document.addEventListener(
+    "keydown",
+    event => {
+
+
+        /* F = fullscreen */
+
+        if (
+            event.key.toLowerCase()
+            === "f"
+        ) {
+
+
+            if (
+                !document.fullscreenElement
+            ) {
+
+                document
+                .documentElement
+                .requestFullscreen();
+
+            }
+
+            else {
+
+                document
+                .exitFullscreen();
+
+            }
+
+        }
+
+
+
+        /* R = replay animation */
+
+        if (
+            event.key.toLowerCase()
+            === "r"
+        ) {
+
+
+            introTimeline.kill();
+
+
+            gsap.set(
+                [
+                    "#introLabel",
+                    "#title",
+                    "#subtitle",
+                    "#people",
+                    "#organisations"
+                ],
+                {
+                    opacity:
+                        0,
+
+                    y:
+                        20
+                }
+            );
+
+
+            introTimeline =
+                playIntro();
+
+        }
+
+
+    }
+);
+
+
+</script>
+
+
+</body>
+</html>

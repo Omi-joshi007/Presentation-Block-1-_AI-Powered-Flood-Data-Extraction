@@ -1,0 +1,3521 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8" />
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+/>
+
+<title>
+  AI-Powered Flood Data Extraction — Slide 4
+</title>
+
+<link
+  href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+  rel="stylesheet"
+/>
+
+<style>
+
+/* =========================================================
+   ROOT / GLOBAL
+========================================================= */
+
+:root {
+
+  --bg: #03101a;
+
+  --cyan: #78dfff;
+
+  --cyan2: #8bdfff;
+
+  --muted: rgba(226,242,249,.62);
+
+  --border: rgba(120,223,255,.18);
+
+  --panel: rgba(6,20,28,.82);
+
+}
+
+
+* {
+
+  box-sizing: border-box;
+
+}
+
+
+html,
+body {
+
+  width: 100%;
+
+  height: 100%;
+
+  margin: 0;
+
+  overflow: hidden;
+
+  background:
+    var(--bg);
+
+  color:
+    white;
+
+  font-family:
+    "Inter",
+    sans-serif;
+
+}
+
+
+/* =========================================================
+   SLIDE
+========================================================= */
+
+.slide {
+
+  position: relative;
+
+  width: 100vw;
+
+  height: 100vh;
+
+  overflow: hidden;
+
+  background:
+
+    radial-gradient(
+      circle at 50% 87%,
+      rgba(31,140,180,.15),
+      transparent 36%
+    ),
+
+    radial-gradient(
+      circle at 52% 42%,
+      rgba(35,127,163,.08),
+      transparent 28%
+    ),
+
+    linear-gradient(
+      180deg,
+      #07131e 0%,
+      #071923 48%,
+      #06151d 100%
+    );
+
+}
+
+
+/* =========================================================
+   BACKGROUND GRID
+========================================================= */
+
+.grid {
+
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 1;
+
+  opacity: .07;
+
+  background-image:
+
+    linear-gradient(
+      rgba(130,210,235,.16) 1px,
+      transparent 1px
+    ),
+
+    linear-gradient(
+      90deg,
+      rgba(130,210,235,.16) 1px,
+      transparent 1px
+    );
+
+  background-size:
+    48px 48px;
+
+}
+
+
+.sky-glow {
+
+  position: absolute;
+
+  width: 650px;
+
+  height: 320px;
+
+  right: -160px;
+
+  top: -90px;
+
+  z-index: 2;
+
+  border-radius:
+    50%;
+
+  background:
+    rgba(105,195,225,.09);
+
+  filter:
+    blur(100px);
+
+}
+
+
+.vignette {
+
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 7;
+
+  pointer-events: none;
+
+  background:
+
+    linear-gradient(
+      90deg,
+      rgba(0,0,0,.18),
+      transparent 45%,
+      rgba(0,0,0,.10)
+    ),
+
+    radial-gradient(
+      circle at center,
+      transparent 53%,
+      rgba(0,0,0,.27)
+    );
+
+}
+
+
+/* =========================================================
+   RAIN
+========================================================= */
+
+.rain {
+
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 4;
+
+  overflow: hidden;
+
+  pointer-events: none;
+
+}
+
+
+.rain-drop {
+
+  position: absolute;
+
+  top: -15vh;
+
+  width: 1px;
+
+  height: 48px;
+
+  opacity: .18;
+
+  transform:
+    rotate(8deg);
+
+  background:
+
+    linear-gradient(
+      transparent,
+      rgba(210,240,255,.48)
+    );
+
+}
+
+
+/* =========================================================
+   WATER
+========================================================= */
+
+.water {
+
+  position: absolute;
+
+  z-index: 5;
+
+  left: 0;
+
+  right: 0;
+
+  bottom: 0;
+
+  height: 12vh;
+
+  overflow: hidden;
+
+  background:
+
+    linear-gradient(
+      180deg,
+      rgba(50,145,185,.22),
+      rgba(5,48,75,.70)
+    );
+
+}
+
+
+.wave {
+
+  position: absolute;
+
+  left: -8%;
+
+  top: -22px;
+
+  width: 116%;
+
+  height: 60px;
+
+}
+
+
+.wave svg {
+
+  width: 100%;
+
+  height: 100%;
+
+}
+
+
+/* =========================================================
+   CONTENT
+========================================================= */
+
+.content {
+
+  position: absolute;
+
+  z-index: 20;
+
+  inset: 0;
+
+  padding:
+
+    clamp(28px,4.5vh,52px)
+
+    clamp(38px,5.5vw,95px)
+
+    clamp(68px,8.5vh,94px);
+
+}
+
+
+/* =========================================================
+   TOP BAR
+========================================================= */
+
+.topbar {
+
+  display: flex;
+
+  justify-content:
+    space-between;
+
+  align-items:
+    center;
+
+}
+
+
+.kicker {
+
+  color:
+    var(--cyan2);
+
+  font-size:
+    clamp(10px,.82vw,13px);
+
+  font-weight:
+    800;
+
+  letter-spacing:
+    .20em;
+
+  text-transform:
+    uppercase;
+
+}
+
+
+.brand {
+
+  color:
+    rgba(255,255,255,.30);
+
+  font-size:
+    clamp(9px,.72vw,11px);
+
+  letter-spacing:
+    .15em;
+
+}
+
+
+/* =========================================================
+   HEADING
+========================================================= */
+
+.heading-row {
+
+  margin-top:
+    clamp(15px,2.4vh,26px);
+
+  display: flex;
+
+  align-items:
+    flex-end;
+
+  justify-content:
+    space-between;
+
+  gap: 40px;
+
+}
+
+
+.heading {
+
+  opacity: 0;
+
+  transform:
+    translateY(20px);
+
+}
+
+
+.heading-label {
+
+  margin-bottom:
+    8px;
+
+  color:
+    rgba(220,241,250,.48);
+
+  font-size:
+    clamp(9px,.72vw,11px);
+
+  font-weight:
+    700;
+
+  letter-spacing:
+    .12em;
+
+  text-transform:
+    uppercase;
+
+}
+
+
+h1 {
+
+  margin: 0;
+
+  font-size:
+    clamp(32px,4.1vw,62px);
+
+  line-height:
+    1.02;
+
+  letter-spacing:
+    -.042em;
+
+  font-weight:
+    900;
+
+}
+
+
+.accent {
+
+  color:
+    var(--cyan);
+
+}
+
+
+.heading-note {
+
+  opacity: 0;
+
+  max-width:
+    350px;
+
+  color:
+    var(--muted);
+
+  font-size:
+    clamp(11px,.85vw,13px);
+
+  line-height:
+    1.48;
+
+}
+
+
+/* =========================================================
+   RESULTS AREA
+========================================================= */
+
+.results-area {
+
+  position: relative;
+
+  margin-top:
+    clamp(18px,2.4vh,28px);
+
+  height:
+    clamp(500px,64vh,650px);
+
+}
+
+
+/* =========================================================
+   METRICS
+========================================================= */
+
+.metrics {
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(6,1fr);
+
+  gap:
+    clamp(8px,.8vw,14px);
+
+}
+
+
+.metric {
+
+  opacity: 0;
+
+  transform:
+    translateY(16px);
+
+  min-height:
+    100px;
+
+  padding:
+    clamp(11px,1vw,16px);
+
+  border-radius:
+    18px;
+
+  border:
+    1px solid
+    rgba(120,223,255,.13);
+
+  background:
+
+    linear-gradient(
+      150deg,
+      rgba(48,151,190,.075),
+      rgba(6,20,28,.82)
+    );
+
+  box-shadow:
+
+    0 18px 45px
+    rgba(0,0,0,.20),
+
+    inset 0 1px
+    rgba(255,255,255,.035);
+
+}
+
+
+.metric-value {
+
+  color:
+    var(--cyan2);
+
+  font-size:
+    clamp(25px,2.25vw,39px);
+
+  line-height:
+    1;
+
+  font-weight:
+    900;
+
+  letter-spacing:
+    -.045em;
+
+}
+
+
+.metric-label {
+
+  margin-top:
+    7px;
+
+  color:
+    rgba(226,242,249,.55);
+
+  font-size:
+    clamp(8px,.62vw,10px);
+
+  font-weight:
+    700;
+
+  line-height:
+    1.3;
+
+  text-transform:
+    uppercase;
+
+  letter-spacing:
+    .07em;
+
+}
+
+
+/* =========================================================
+   DATABASE STORY AREA
+========================================================= */
+
+.database-story {
+
+  margin-top:
+    clamp(14px,1.8vh,22px);
+
+  height:
+    calc(100% - 125px);
+
+  display: grid;
+
+  grid-template-columns:
+    .87fr
+    .07fr
+    1.08fr
+    .07fr
+    1.08fr;
+
+  gap:
+    clamp(8px,.75vw,14px);
+
+  align-items:
+    center;
+
+}
+
+
+/* =========================================================
+   SCREENSHOT CARDS
+========================================================= */
+
+.db-card {
+
+  opacity: 0;
+
+  transform:
+    translateY(22px)
+    scale(.97);
+
+  position: relative;
+
+  width: 100%;
+
+  border-radius:
+    20px;
+
+  overflow: hidden;
+
+  border:
+    1px solid
+    rgba(120,223,255,.14);
+
+  background:
+    rgba(6,20,28,.86);
+
+  box-shadow:
+
+    0 22px 60px
+    rgba(0,0,0,.25),
+
+    inset 0 1px
+    rgba(255,255,255,.04);
+
+  transform-origin:
+    center center;
+
+}
+
+
+.db-card.active {
+
+  border-color:
+    rgba(120,223,255,.56);
+
+}
+
+
+.db-top {
+
+  height:
+    48px;
+
+  display: flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    space-between;
+
+  padding:
+    0 14px;
+
+  background:
+    rgba(255,255,255,.035);
+
+  border-bottom:
+    1px solid
+    rgba(255,255,255,.055);
+
+}
+
+
+.db-name {
+
+  display: flex;
+
+  align-items:
+    center;
+
+  gap:
+    8px;
+
+  color:
+    white;
+
+  font-size:
+    clamp(10px,.76vw,12px);
+
+  font-weight:
+    800;
+
+}
+
+
+.db-dot {
+
+  width:
+    7px;
+
+  height:
+    7px;
+
+  border-radius:
+    50%;
+
+  background:
+    var(--cyan);
+
+  box-shadow:
+
+    0 0 10px
+    rgba(120,223,255,.55);
+
+}
+
+
+.db-type {
+
+  color:
+    rgba(255,255,255,.34);
+
+  font-size:
+    clamp(8px,.58vw,9px);
+
+  letter-spacing:
+    .08em;
+
+}
+
+
+.db-image-wrap {
+
+  position: relative;
+
+  height:
+    clamp(210px,28vh,290px);
+
+  overflow: hidden;
+
+  background:
+    #e8ebf1;
+
+}
+
+
+.db-image-wrap img {
+
+  width:
+    100%;
+
+  height:
+    100%;
+
+  object-fit:
+    cover;
+
+  object-position:
+    top left;
+
+  display:
+    block;
+
+}
+
+
+.db-overlay {
+
+  position: absolute;
+
+  inset: 0;
+
+  pointer-events:
+    none;
+
+  background:
+
+    linear-gradient(
+      180deg,
+      transparent 74%,
+      rgba(3,16,26,.44)
+    );
+
+}
+
+
+.db-footer {
+
+  padding:
+    12px 14px 14px;
+
+}
+
+
+.db-stage {
+
+  color:
+    var(--cyan2);
+
+  font-size:
+    clamp(8px,.62vw,10px);
+
+  font-weight:
+    800;
+
+  letter-spacing:
+    .10em;
+
+  text-transform:
+    uppercase;
+
+}
+
+
+.db-description {
+
+  margin-top:
+    5px;
+
+  color:
+    rgba(225,240,248,.63);
+
+  font-size:
+    clamp(9px,.72vw,11px);
+
+  line-height:
+    1.38;
+
+}
+
+
+/* =========================================================
+   CENTRAL EVENT CARD
+========================================================= */
+
+.event-column {
+
+  display:
+    grid;
+
+  grid-template-rows:
+    auto
+    auto;
+
+  gap:
+    clamp(9px,1vh,14px);
+
+}
+
+
+.event-card {
+
+  opacity: 0;
+
+  transform:
+    translateY(22px)
+    scale(.97);
+
+}
+
+
+.article-card {
+
+  opacity: 0;
+
+  transform:
+    translateY(18px)
+    scale(.98);
+
+}
+
+
+.article-card .db-image-wrap {
+
+  height:
+    clamp(135px,17vh,175px);
+
+}
+
+
+/* =========================================================
+   INCIDENT + IMPACT STACK
+========================================================= */
+
+.output-column {
+
+  display:
+    grid;
+
+  grid-template-rows:
+    1fr
+    1fr;
+
+  gap:
+    clamp(9px,1vh,14px);
+
+}
+
+
+.output-column .db-image-wrap {
+
+  height:
+    clamp(135px,17vh,175px);
+
+}
+
+
+/* =========================================================
+   CONNECTORS
+========================================================= */
+
+.connector {
+
+  opacity: 0;
+
+  transform:
+    scaleX(0);
+
+  transform-origin:
+    left center;
+
+  position: relative;
+
+  height:
+    2px;
+
+  background:
+
+    linear-gradient(
+      90deg,
+      rgba(120,223,255,.10),
+      var(--cyan)
+    );
+
+}
+
+
+.connector::after {
+
+  content: "";
+
+  position: absolute;
+
+  right:
+    -1px;
+
+  top:
+    -4px;
+
+  width:
+    8px;
+
+  height:
+    8px;
+
+  border-top:
+    2px solid var(--cyan);
+
+  border-right:
+    2px solid var(--cyan);
+
+  transform:
+    rotate(45deg);
+
+}
+
+
+/* =========================================================
+   RELATIONSHIP STRIP
+========================================================= */
+
+.relationship-strip {
+
+  opacity: 0;
+
+  position: absolute;
+
+  left:
+    50%;
+
+  bottom:
+    clamp(-6px,-.4vh,-2px);
+
+  transform:
+    translateX(-50%)
+    translateY(8px);
+
+  z-index:
+    35;
+
+  width:
+    min(83vw,1210px);
+
+  padding:
+    9px 15px;
+
+  display:
+    flex;
+
+  justify-content:
+    center;
+
+  align-items:
+    center;
+
+  gap:
+    10px;
+
+  border-radius:
+    999px;
+
+  background:
+    rgba(5,23,32,.94);
+
+  border:
+    1px solid
+    rgba(120,223,255,.19);
+
+  box-shadow:
+
+    0 8px 30px
+    rgba(0,0,0,.25);
+
+  color:
+    rgba(227,244,251,.64);
+
+  font-size:
+    clamp(9px,.67vw,11px);
+
+  white-space:
+    nowrap;
+
+  backdrop-filter:
+    blur(10px);
+
+}
+
+
+.relationship-strip strong {
+
+  color:
+    white;
+
+}
+
+
+.relationship-dot {
+
+  width:
+    7px;
+
+  height:
+    7px;
+
+  flex:
+    0 0 7px;
+
+  border-radius:
+    50%;
+
+  background:
+    var(--cyan);
+
+  box-shadow:
+
+    0 0 12px
+    rgba(120,223,255,.65);
+
+}
+
+
+/* =========================================================
+   FINAL OUTCOME
+========================================================= */
+
+.final-outcome {
+
+  opacity: 0;
+
+  position: absolute;
+
+  left:
+    50%;
+
+  top:
+    50%;
+
+  transform:
+    translate(-50%,-50%)
+    scale(.94);
+
+  z-index:
+    60;
+
+  width:
+    min(760px,60vw);
+
+  padding:
+    clamp(24px,2.4vw,38px);
+
+  text-align:
+    center;
+
+  border-radius:
+    26px;
+
+  border:
+    1px solid
+    rgba(120,223,255,.34);
+
+  background:
+
+    linear-gradient(
+      145deg,
+      rgba(28,103,132,.23),
+      rgba(4,18,26,.97)
+    );
+
+  box-shadow:
+
+    0 35px 100px
+    rgba(0,0,0,.50),
+
+    0 0 60px
+    rgba(50,170,215,.10),
+
+    inset 0 1px
+    rgba(255,255,255,.06);
+
+  backdrop-filter:
+    blur(18px);
+
+  pointer-events:
+    none;
+
+}
+
+
+.final-small {
+
+  color:
+    var(--cyan2);
+
+  font-size:
+    clamp(9px,.68vw,11px);
+
+  font-weight:
+    800;
+
+  letter-spacing:
+    .16em;
+
+  text-transform:
+    uppercase;
+
+}
+
+
+.final-title {
+
+  margin-top:
+    10px;
+
+  color:
+    white;
+
+  font-size:
+    clamp(25px,2.6vw,43px);
+
+  line-height:
+    1.08;
+
+  letter-spacing:
+    -.035em;
+
+  font-weight:
+    900;
+
+}
+
+
+.final-title span {
+
+  color:
+    var(--cyan);
+
+}
+
+
+.final-sub {
+
+  margin:
+    12px auto 0;
+
+  max-width:
+    590px;
+
+  color:
+    rgba(228,243,249,.61);
+
+  font-size:
+    clamp(10px,.78vw,13px);
+
+  line-height:
+    1.48;
+
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width:1100px) {
+
+  .metrics {
+
+    gap:
+      7px;
+
+  }
+
+
+  .metric {
+
+    padding:
+      10px;
+
+  }
+
+
+  .database-story {
+
+    grid-template-columns:
+      .82fr .06fr 1.08fr .06fr 1.08fr;
+
+  }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="slide">
+
+
+<!-- =====================================================
+     BACKGROUND
+===================================================== -->
+
+<div class="grid"></div>
+
+<div class="sky-glow"></div>
+
+
+<div
+  class="rain"
+  id="rain"
+></div>
+
+
+<div class="vignette"></div>
+
+
+<div class="water">
+
+
+<div class="wave">
+
+
+<svg
+  viewBox="0 0 1600 80"
+  preserveAspectRatio="none"
+>
+
+
+<path
+
+  d="
+    M0,40
+    C160,0 320,80 480,40
+    C640,0 800,80 960,40
+    C1120,0 1280,80 1440,40
+    C1510,22 1560,25 1600,40
+    L1600,80
+    L0,80
+    Z
+  "
+
+  fill="rgba(82,183,222,.52)"
+
+/>
+
+
+</svg>
+
+
+</div>
+
+
+</div>
+
+
+<!-- =====================================================
+     CONTENT
+===================================================== -->
+
+<div class="content">
+
+
+<!-- TOP BAR -->
+
+<div class="topbar">
+
+
+<div class="kicker">
+
+  What Did The Pipeline Produce?
+
+</div>
+
+
+<div class="brand">
+
+  AI-POWERED FLOOD DATA EXTRACTION
+
+</div>
+
+
+</div>
+
+
+<!-- =====================================================
+     HEADING
+===================================================== -->
+
+<div class="heading-row">
+
+
+<div
+  class="heading"
+  id="heading"
+>
+
+
+<div class="heading-label">
+
+  Database outcome
+
+</div>
+
+
+<h1>
+
+  From scattered articles to
+
+  <span class="accent">
+
+    structured flood evidence.
+
+  </span>
+
+</h1>
+
+
+</div>
+
+
+<div
+  class="heading-note"
+  id="headingNote"
+>
+
+  The result is a connected database where
+  articles, events, incidents and impacts
+  can be searched and analysed.
+
+</div>
+
+
+</div>
+
+
+<!-- =====================================================
+     RESULTS
+===================================================== -->
+
+<div class="results-area">
+
+
+<!-- ===================================================
+     METRICS
+=================================================== -->
+
+<div class="metrics">
+
+
+<div
+  class="metric"
+  id="metricArticles"
+>
+
+
+<div
+  class="metric-value"
+  id="articlesValue"
+>
+
+  4,742
+
+</div>
+
+
+<div class="metric-label">
+
+  Articles collected
+
+</div>
+
+
+</div>
+
+
+<div
+  class="metric"
+  id="metricTargets"
+>
+
+
+<div
+  class="metric-value"
+  id="targetsValue"
+>
+
+  34
+
+</div>
+
+
+<div class="metric-label">
+
+  Target flood events
+
+</div>
+
+
+</div>
+
+
+<div
+  class="metric"
+  id="metricVerified"
+>
+
+
+<div
+  class="metric-value"
+  id="verifiedValue"
+>
+
+  1,029
+
+</div>
+
+
+<div class="metric-label">
+
+  Verified article links
+
+</div>
+
+
+</div>
+
+
+<div
+  class="metric"
+  id="metricIncidents"
+>
+
+
+<div
+  class="metric-value"
+  id="incidentsValue"
+>
+
+  —
+
+</div>
+
+
+<div class="metric-label">
+
+  Incidents extracted
+
+</div>
+
+
+</div>
+
+
+<div
+  class="metric"
+  id="metricImpacts"
+>
+
+
+<div
+  class="metric-value"
+  id="impactsValue"
+>
+
+  —
+
+</div>
+
+
+<div class="metric-label">
+
+  Impacts extracted
+
+</div>
+
+
+</div>
+
+
+<div
+  class="metric"
+  id="metricLocations"
+>
+
+
+<div
+  class="metric-value"
+  id="locationsValue"
+>
+
+  —
+
+</div>
+
+
+<div class="metric-label">
+
+  Locations identified
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+<!-- ===================================================
+     DATABASE RELATIONSHIPS
+=================================================== -->
+
+<div class="database-story">
+
+
+<!-- =================================================
+     EVENT ARTICLES
+================================================= -->
+
+<div
+  class="db-card"
+  id="articlesCard"
+>
+
+
+<div class="db-top">
+
+
+<div class="db-name">
+
+<div class="db-dot"></div>
+
+Event Articles
+
+</div>
+
+
+<div class="db-type">
+
+  SOURCE EVIDENCE
+
+</div>
+
+
+</div>
+
+
+<div class="db-image-wrap">
+
+
+<img
+  src="db_articles.png"
+  alt="Event articles database table"
+/>
+
+
+<div class="db-overlay"></div>
+
+
+</div>
+
+
+<div class="db-footer">
+
+
+<div class="db-stage">
+
+  Verified articles
+
+</div>
+
+
+<div class="db-description">
+
+  News evidence linked to the correct flood event.
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+<!-- CONNECTOR -->
+
+<div
+  class="connector"
+  id="connector1"
+></div>
+
+
+<!-- =================================================
+     EVENTS COLUMN
+================================================= -->
+
+<div class="event-column">
+
+
+<div
+  class="db-card event-card"
+  id="eventsCard"
+>
+
+
+<div class="db-top">
+
+
+<div class="db-name">
+
+<div class="db-dot"></div>
+
+Events
+
+</div>
+
+
+<div class="db-type">
+
+  EVENT LEVEL
+
+</div>
+
+
+</div>
+
+
+<div class="db-image-wrap">
+
+
+<img
+  src="db_events.png"
+  alt="Flood events database table"
+/>
+
+
+<div class="db-overlay"></div>
+
+
+</div>
+
+
+<div class="db-footer">
+
+
+<div class="db-stage">
+
+  Event
+
+</div>
+
+
+<div class="db-description">
+
+  One flood episode with dates, region and summary.
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+<div
+  class="db-card article-card"
+  id="relationshipCard"
+>
+
+
+<div class="db-top">
+
+
+<div class="db-name">
+
+<div class="db-dot"></div>
+
+Linked Evidence
+
+</div>
+
+
+<div class="db-type">
+
+  EVENT ↔ ARTICLE
+
+</div>
+
+
+</div>
+
+
+<div class="db-footer">
+
+
+<div class="db-stage">
+
+  Evidence relationship
+
+</div>
+
+
+<div class="db-description">
+
+  Every event retains links back to supporting source articles.
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+<!-- CONNECTOR -->
+
+<div
+  class="connector"
+  id="connector2"
+></div>
+
+
+<!-- =================================================
+     INCIDENTS + IMPACTS
+================================================= -->
+
+<div class="output-column">
+
+
+<div
+  class="db-card"
+  id="incidentsCard"
+>
+
+
+<div class="db-top">
+
+
+<div class="db-name">
+
+<div class="db-dot"></div>
+
+Incidents
+
+</div>
+
+
+<div class="db-type">
+
+  WHAT HAPPENED
+
+</div>
+
+
+</div>
+
+
+<div class="db-image-wrap">
+
+
+<img
+  src="db_incidents.png"
+  alt="Flood incidents database table"
+/>
+
+
+<div class="db-overlay"></div>
+
+
+</div>
+
+
+<div class="db-footer">
+
+
+<div class="db-stage">
+
+  Incident
+
+</div>
+
+
+<div class="db-description">
+
+  Flooding, slips, road closures and other physical occurrences.
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+<div
+  class="db-card"
+  id="impactsCard"
+>
+
+
+<div class="db-top">
+
+
+<div class="db-name">
+
+<div class="db-dot"></div>
+
+Impacts
+
+</div>
+
+
+<div class="db-type">
+
+  CONSEQUENCE
+
+</div>
+
+
+</div>
+
+
+<div class="db-image-wrap">
+
+
+<img
+  src="db_impacts.png"
+  alt="Flood impacts database table"
+/>
+
+
+<div class="db-overlay"></div>
+
+
+</div>
+
+
+<div class="db-footer">
+
+
+<div class="db-stage">
+
+  Impact
+
+</div>
+
+
+<div class="db-description">
+
+  Evacuation, isolation, damage, disruption and human consequences.
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+<!-- ===================================================
+     RELATIONSHIP SUMMARY
+=================================================== -->
+<!-- 
+<div
+  class="relationship-strip"
+  id="relationshipStrip"
+>
+
+
+<div class="relationship-dot"></div>
+
+
+<div>
+
+  <strong>Article evidence</strong>
+
+  →
+
+  <strong>Event</strong>
+
+  →
+
+  <strong>Incident</strong>
+
+  →
+
+  <strong>Impact</strong>
+
+  · every record remains connected to its source
+
+</div>
+
+
+</div>
+-->
+
+</div>
+
+
+</div>
+
+
+<!-- =====================================================
+     FINAL OUTCOME
+===================================================== -->
+
+<div
+  class="final-outcome"
+  id="finalOutcome"
+>
+
+
+<div class="final-small">
+
+  Core Project Outcome
+
+</div>
+
+
+<div class="final-title">
+
+  Flood information is no longer
+
+  <span>
+
+    buried in text.
+
+  </span>
+
+</div>
+
+
+<div class="final-sub">
+
+  It is now structured, searchable and evidence-linked —
+  creating a reusable dataset for analysis, dashboards
+  and future disaster intelligence applications.
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+<!-- =====================================================
+     GSAP
+===================================================== -->
+
+<script
+  src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"
+></script>
+
+
+<script>
+
+/* =========================================================
+   EDIT YOUR FINAL COUNTS HERE ONLY
+========================================================= */
+
+const RESULTS = {
+
+  articles:
+    "4,742",
+
+  targetEvents:
+    "34",
+
+  verifiedArticleLinks:
+    "1,029",
+
+  incidents:
+    "176",
+
+  impacts:
+    "358",
+
+  locations:
+    "153"
+
+};
+
+
+/*
+  Once you calculate them, for example:
+
+  incidents: "176",
+  impacts: "358",
+  locations: "124"
+
+*/
+
+
+document.getElementById(
+  "articlesValue"
+).textContent =
+  RESULTS.articles;
+
+
+document.getElementById(
+  "targetsValue"
+).textContent =
+  RESULTS.targetEvents;
+
+
+document.getElementById(
+  "verifiedValue"
+).textContent =
+  RESULTS.verifiedArticleLinks;
+
+
+document.getElementById(
+  "incidentsValue"
+).textContent =
+  RESULTS.incidents;
+
+
+document.getElementById(
+  "impactsValue"
+).textContent =
+  RESULTS.impacts;
+
+
+document.getElementById(
+  "locationsValue"
+).textContent =
+  RESULTS.locations;
+
+
+/* =========================================================
+   RAIN
+========================================================= */
+
+const rain =
+  document.getElementById(
+    "rain"
+  );
+
+
+for (
+  let i = 0;
+  i < 55;
+  i++
+) {
+
+
+  const drop =
+    document.createElement(
+      "div"
+    );
+
+
+  drop.className =
+    "rain-drop";
+
+
+  drop.style.left =
+    Math.random()
+    * 105
+    + "%";
+
+
+  drop.style.height =
+    (
+      20
+      +
+      Math.random()
+      * 45
+    )
+    + "px";
+
+
+  drop.style.opacity =
+    .08
+    +
+    Math.random()
+    * .22;
+
+
+  rain.appendChild(
+    drop
+  );
+
+
+  gsap.to(
+    drop,
+    {
+
+      y:
+        window.innerHeight
+        * 1.35,
+
+      x:
+        60,
+
+      duration:
+        .9
+        +
+        Math.random()
+        * .8,
+
+      delay:
+        Math.random()
+        * 1.8,
+
+      repeat:
+        -1,
+
+      ease:
+        "none"
+
+    }
+  );
+
+
+}
+
+
+/* =========================================================
+   WATER
+========================================================= */
+
+gsap.to(
+  ".wave",
+  {
+
+    x:
+      -85,
+
+    duration:
+      3.2,
+
+    repeat:
+      -1,
+
+    yoyo:
+      true,
+
+    ease:
+      "sine.inOut"
+
+  }
+);
+
+
+/* =========================================================
+   STEP STATE
+========================================================= */
+
+let currentStep =
+  1;
+
+
+const MAX_STEP =
+  5;
+
+
+/* =========================================================
+   STANDARD CARD VALUES
+========================================================= */
+
+const NORMAL_SHADOW =
+  "0 22px 60px rgba(0,0,0,.25), inset 0 1px rgba(255,255,255,.04)";
+
+
+const ACTIVE_SHADOW =
+  "0 0 0 1px rgba(120,223,255,.25), 0 28px 85px rgba(22,140,185,.24), inset 0 1px rgba(255,255,255,.06)";
+
+
+const NORMAL_BORDER =
+  "rgba(120,223,255,.14)";
+
+
+const ACTIVE_BORDER =
+  "rgba(120,223,255,.58)";
+
+
+/* =========================================================
+   FOCUS HELPERS
+========================================================= */
+
+function focusCard(
+  selector
+) {
+
+
+  gsap.to(
+    selector,
+    {
+
+      scale:
+        1.025,
+
+      borderColor:
+        ACTIVE_BORDER,
+
+      boxShadow:
+        ACTIVE_SHADOW,
+
+      zIndex:
+        15,
+
+      duration:
+        .42,
+
+      ease:
+        "power2.out"
+
+    }
+  );
+
+
+}
+
+
+function normaliseCard(
+  selector
+) {
+
+
+  gsap.to(
+    selector,
+    {
+
+      scale:
+        1,
+
+      borderColor:
+        NORMAL_BORDER,
+
+      boxShadow:
+        NORMAL_SHADOW,
+
+      zIndex:
+        1,
+
+      duration:
+        .36,
+
+      ease:
+        "power2.out"
+
+    }
+  );
+
+
+}
+
+
+/* =========================================================
+   METRIC FOCUS
+========================================================= */
+
+function focusMetrics() {
+
+
+  gsap.to(
+    ".metric",
+    {
+
+      borderColor:
+        "rgba(120,223,255,.34)",
+
+      boxShadow:
+        "0 14px 42px rgba(20,130,170,.12)",
+
+      duration:
+        .35,
+
+      stagger:
+        .05
+
+    }
+  );
+
+
+}
+
+
+function normaliseMetrics() {
+
+
+  gsap.to(
+    ".metric",
+    {
+
+      borderColor:
+        "rgba(120,223,255,.13)",
+
+      boxShadow:
+        "0 18px 45px rgba(0,0,0,.20)",
+
+      duration:
+        .30
+
+    }
+  );
+
+
+}
+
+
+/* =========================================================
+   INITIAL ENTRANCE
+========================================================= */
+
+function initialEntrance() {
+
+
+  gsap.set(
+    "#heading",
+    {
+
+      opacity:
+        0,
+
+      y:
+        20
+
+    }
+  );
+
+
+  gsap.set(
+    "#headingNote",
+    {
+
+      opacity:
+        0,
+
+      y:
+        12
+
+    }
+  );
+
+
+  gsap.set(
+    ".metric",
+    {
+
+      opacity:
+        0,
+
+      y:
+        16
+
+    }
+  );
+
+
+  gsap.set(
+    [
+      "#articlesCard",
+      "#eventsCard",
+      "#relationshipCard",
+      "#incidentsCard",
+      "#impactsCard"
+    ],
+    {
+
+      opacity:
+        0,
+
+      y:
+        22,
+
+      scale:
+        .97
+
+    }
+  );
+
+
+  gsap.set(
+    [
+      "#connector1",
+      "#connector2"
+    ],
+    {
+
+      opacity:
+        0,
+
+      scaleX:
+        0
+
+    }
+  );
+
+
+  gsap.set(
+    "#relationshipStrip",
+    {
+
+      opacity:
+        0,
+
+      y:
+        8
+
+    }
+  );
+
+
+  gsap.set(
+    "#finalOutcome",
+    {
+
+      opacity:
+        0,
+
+      scale:
+        .94
+
+    }
+  );
+
+
+  const tl =
+    gsap.timeline();
+
+
+  tl.to(
+    "#heading",
+    {
+
+      opacity:
+        1,
+
+      y:
+        0,
+
+      duration:
+        .75,
+
+      ease:
+        "power3.out"
+
+    },
+    .10
+  );
+
+
+  tl.to(
+    "#headingNote",
+    {
+
+      opacity:
+        1,
+
+      y:
+        0,
+
+      duration:
+        .45
+
+    },
+    .42
+  );
+
+
+  /*
+     STEP 1:
+     numbers appear
+  */
+
+  tl.to(
+    ".metric",
+    {
+
+      opacity:
+        1,
+
+      y:
+        0,
+
+      duration:
+        .42,
+
+      stagger:
+        .07,
+
+      ease:
+        "power3.out"
+
+    },
+    .62
+  );
+
+
+  tl.to(
+    ".metric",
+    {
+
+      borderColor:
+        "rgba(120,223,255,.34)",
+
+      boxShadow:
+        "0 14px 42px rgba(20,130,170,.12)",
+
+      duration:
+        .38,
+
+      stagger:
+        .04
+
+    },
+    1.04
+  );
+
+
+}
+
+
+/* =========================================================
+   STEP 2
+   ARTICLES + EVENT
+========================================================= */
+
+function showEvidenceAndEvent() {
+
+
+  normaliseMetrics();
+
+
+  const tl =
+    gsap.timeline();
+
+
+  tl.to(
+    "#articlesCard",
+    {
+
+      opacity:
+        1,
+
+      y:
+        0,
+
+      scale:
+        1,
+
+      duration:
+        .58,
+
+      ease:
+        "power3.out"
+
+    }
+  );
+
+
+  tl.to(
+    "#connector1",
+    {
+
+      opacity:
+        1,
+
+      scaleX:
+        1,
+
+      duration:
+        .38
+
+    },
+    .24
+  );
+
+
+  tl.to(
+    "#eventsCard",
+    {
+
+      opacity:
+        1,
+
+      y:
+        0,
+
+      scale:
+        1,
+
+      duration:
+        .58,
+
+      ease:
+        "power3.out"
+
+    },
+    .40
+  );
+
+
+  tl.to(
+    "#relationshipCard",
+    {
+
+      opacity:
+        1,
+
+      y:
+        0,
+
+      scale:
+        1,
+
+      duration:
+        .45
+
+    },
+    .65
+  );
+
+
+  /*
+     Event becomes primary focus.
+  */
+
+  tl.to(
+    "#eventsCard",
+    {
+
+      scale:
+        1.025,
+
+      borderColor:
+        ACTIVE_BORDER,
+
+      boxShadow:
+        ACTIVE_SHADOW,
+
+      duration:
+        .40
+
+    },
+    .85
+  );
+
+
+}
+
+
+function hideEvidenceAndEvent() {
+
+
+  focusMetrics();
+
+
+  gsap.to(
+    [
+      "#articlesCard",
+      "#eventsCard",
+      "#relationshipCard"
+    ],
+    {
+
+      opacity:
+        0,
+
+      y:
+        22,
+
+      scale:
+        .97,
+
+      duration:
+        .36
+
+    }
+  );
+
+
+  gsap.to(
+    "#connector1",
+    {
+
+      opacity:
+        0,
+
+      scaleX:
+        0,
+
+      duration:
+        .28
+
+    }
+  );
+
+
+}
+
+
+/* =========================================================
+   STEP 3
+   INCIDENTS
+========================================================= */
+
+function showIncidents() {
+
+
+  normaliseCard(
+    "#eventsCard"
+  );
+
+
+  const tl =
+    gsap.timeline();
+
+
+  tl.to(
+    "#connector2",
+    {
+
+      opacity:
+        1,
+
+      scaleX:
+        1,
+
+      duration:
+        .38
+
+    }
+  );
+
+
+  tl.to(
+    "#incidentsCard",
+    {
+
+      opacity:
+        1,
+
+      y:
+        0,
+
+      scale:
+        1,
+
+      duration:
+        .55,
+
+      ease:
+        "power3.out"
+
+    },
+    .22
+  );
+
+
+  tl.to(
+    "#incidentsCard",
+    {
+
+      scale:
+        1.025,
+
+      borderColor:
+        ACTIVE_BORDER,
+
+      boxShadow:
+        ACTIVE_SHADOW,
+
+      duration:
+        .40
+
+    },
+    .67
+  );
+
+
+}
+
+
+function hideIncidents() {
+
+
+  normaliseCard(
+    "#incidentsCard"
+  );
+
+
+  focusCard(
+    "#eventsCard"
+  );
+
+
+  gsap.to(
+    "#incidentsCard",
+    {
+
+      opacity:
+        0,
+
+      y:
+        22,
+
+      scale:
+        .97,
+
+      duration:
+        .36
+
+    }
+  );
+
+
+  gsap.to(
+    "#connector2",
+    {
+
+      opacity:
+        0,
+
+      scaleX:
+        0,
+
+      duration:
+        .28
+
+    }
+  );
+
+
+}
+
+
+/* =========================================================
+   STEP 4
+   IMPACTS + COMPLETE RELATIONSHIP
+========================================================= */
+
+function showImpacts() {
+
+
+  normaliseCard(
+    "#incidentsCard"
+  );
+
+
+  const tl =
+    gsap.timeline();
+
+
+  tl.to(
+    "#impactsCard",
+    {
+
+      opacity:
+        1,
+
+      y:
+        0,
+
+      scale:
+        1,
+
+      duration:
+        .55,
+
+      ease:
+        "power3.out"
+
+    }
+  );
+
+
+  tl.to(
+    "#impactsCard",
+    {
+
+      scale:
+        1.025,
+
+      borderColor:
+        ACTIVE_BORDER,
+
+      boxShadow:
+        ACTIVE_SHADOW,
+
+      duration:
+        .40
+
+    },
+    .40
+  );
+
+
+  tl.to(
+    "#relationshipStrip",
+    {
+
+      opacity:
+        1,
+
+      y:
+        0,
+
+      duration:
+        .45,
+
+      ease:
+        "power3.out"
+
+    },
+    .60
+  );
+
+
+}
+
+
+function hideImpacts() {
+
+
+  gsap.to(
+    "#relationshipStrip",
+    {
+
+      opacity:
+        0,
+
+      y:
+        8,
+
+      duration:
+        .25
+
+    }
+  );
+
+
+  gsap.to(
+    "#impactsCard",
+    {
+
+      opacity:
+        0,
+
+      y:
+        22,
+
+      scale:
+        .97,
+
+      duration:
+        .36
+
+    }
+  );
+
+
+  focusCard(
+    "#incidentsCard"
+  );
+
+
+}
+
+
+/* =========================================================
+   STEP 5
+   FINAL PROJECT OUTCOME
+========================================================= */
+
+function showFinalOutcome() {
+
+
+  normaliseCard(
+    "#impactsCard"
+  );
+
+
+  /*
+     Slightly dim database in background.
+  */
+
+  gsap.to(
+    [
+      ".metrics",
+      ".database-story",
+      "#relationshipStrip"
+    ],
+    {
+
+      opacity:
+        .26,
+
+      duration:
+        .40
+
+    }
+  );
+
+
+  gsap.to(
+    "#finalOutcome",
+    {
+
+      opacity:
+        1,
+
+      scale:
+        1,
+
+      duration:
+        .60,
+
+      ease:
+        "back.out(1.25)"
+
+    }
+  );
+
+
+}
+
+
+function hideFinalOutcome() {
+
+
+  gsap.to(
+    "#finalOutcome",
+    {
+
+      opacity:
+        0,
+
+      scale:
+        .94,
+
+      duration:
+        .35
+
+    }
+  );
+
+
+  gsap.to(
+    [
+      ".metrics",
+      ".database-story",
+      "#relationshipStrip"
+    ],
+    {
+
+      opacity:
+        1,
+
+      duration:
+        .40
+
+    }
+  );
+
+
+  focusCard(
+    "#impactsCard"
+  );
+
+
+}
+
+
+/* =========================================================
+   NEXT STEP
+========================================================= */
+
+function nextStep() {
+
+
+  /*
+     Step 1 already exists when slide loads.
+  */
+
+
+  if (
+    currentStep === 1
+  ) {
+
+
+    currentStep =
+      2;
+
+
+    showEvidenceAndEvent();
+
+
+    return true;
+
+
+  }
+
+
+  if (
+    currentStep === 2
+  ) {
+
+
+    currentStep =
+      3;
+
+
+    showIncidents();
+
+
+    return true;
+
+
+  }
+
+
+  if (
+    currentStep === 3
+  ) {
+
+
+    currentStep =
+      4;
+
+
+    showImpacts();
+
+
+    return true;
+
+
+  }
+
+
+  if (
+    currentStep === 4
+  ) {
+
+
+    currentStep =
+      5;
+
+
+    showFinalOutcome();
+
+
+    return true;
+
+
+  }
+
+
+  return false;
+
+
+}
+
+
+/* =========================================================
+   PREVIOUS STEP
+========================================================= */
+
+function previousStep() {
+
+
+  if (
+    currentStep === 5
+  ) {
+
+
+    currentStep =
+      4;
+
+
+    hideFinalOutcome();
+
+
+    return true;
+
+
+  }
+
+
+  if (
+    currentStep === 4
+  ) {
+
+
+    currentStep =
+      3;
+
+
+    hideImpacts();
+
+
+    return true;
+
+
+  }
+
+
+  if (
+    currentStep === 3
+  ) {
+
+
+    currentStep =
+      2;
+
+
+    hideIncidents();
+
+
+    return true;
+
+
+  }
+
+
+  if (
+    currentStep === 2
+  ) {
+
+
+    currentStep =
+      1;
+
+
+    hideEvidenceAndEvent();
+
+
+    return true;
+
+
+  }
+
+
+  return false;
+
+
+}
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+function resetSlide() {
+
+
+  currentStep =
+    1;
+
+
+  gsap.killTweensOf(
+    [
+      "#heading",
+      "#headingNote",
+      ".metric",
+      "#articlesCard",
+      "#eventsCard",
+      "#relationshipCard",
+      "#incidentsCard",
+      "#impactsCard",
+      "#connector1",
+      "#connector2",
+      "#relationshipStrip",
+      "#finalOutcome",
+      ".metrics",
+      ".database-story"
+    ]
+  );
+
+
+  gsap.set(
+    [
+      ".metrics",
+      ".database-story"
+    ],
+    {
+
+      opacity:
+        1
+
+    }
+  );
+
+
+  initialEntrance();
+
+
+}
+
+
+/* =========================================================
+   START
+========================================================= */
+
+initialEntrance();
+
+
+/* =========================================================
+   CLICK = FORWARD
+========================================================= */
+
+document.addEventListener(
+  "click",
+  () => {
+
+
+    nextStep();
+
+
+  }
+);
+
+
+/* =========================================================
+   KEYBOARD
+========================================================= */
+
+document.addEventListener(
+  "keydown",
+  event => {
+
+
+    /* RIGHT / SPACE */
+
+    if (
+      event.key === "ArrowRight"
+      ||
+      event.key === " "
+    ) {
+
+
+      event.preventDefault();
+
+
+      nextStep();
+
+
+      return;
+
+
+    }
+
+
+    /* LEFT */
+
+    if (
+      event.key === "ArrowLeft"
+    ) {
+
+
+      event.preventDefault();
+
+
+      previousStep();
+
+
+      return;
+
+
+    }
+
+
+    /* FULLSCREEN */
+
+    if (
+      event.key.toLowerCase()
+      === "f"
+    ) {
+
+
+      if (
+        !document.fullscreenElement
+      ) {
+
+
+        document
+          .documentElement
+          .requestFullscreen();
+
+
+      }
+
+      else {
+
+
+        document
+          .exitFullscreen();
+
+
+      }
+
+
+      return;
+
+
+    }
+
+
+    /* RESET */
+
+    if (
+      event.key.toLowerCase()
+      === "r"
+    ) {
+
+
+      resetSlide();
+
+
+      return;
+
+
+    }
+
+
+  }
+);
+
+</script>
+
+
+</body>
+
+</html>

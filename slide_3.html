@@ -1,0 +1,4253 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8" />
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+/>
+
+<title>
+  AI-Powered Flood Data Extraction — Slide 3
+</title>
+
+<link
+  href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+  rel="stylesheet"
+/>
+
+<style>
+
+/* =========================================================
+   ROOT / GLOBAL
+========================================================= */
+
+:root {
+
+  --bg: #03101a;
+
+  --cyan: #78dfff;
+
+  --cyan2: #8bdfff;
+
+  --muted: rgba(226,242,249,.62);
+
+  --border: rgba(120,223,255,.18);
+
+  --panel: rgba(6,20,28,.82);
+
+  --normal-card-height: 245px;
+
+  --active-card-height: 390px;
+
+}
+
+
+* {
+
+  box-sizing: border-box;
+
+}
+
+
+html,
+body {
+
+  width: 100%;
+
+  height: 100%;
+
+  margin: 0;
+
+  overflow: hidden;
+
+  background: var(--bg);
+
+  color: white;
+
+  font-family:
+    "Inter",
+    sans-serif;
+
+}
+
+
+/* =========================================================
+   SLIDE
+========================================================= */
+
+.slide {
+
+  position: relative;
+
+  width: 100vw;
+
+  height: 100vh;
+
+  overflow: hidden;
+
+  background:
+
+    radial-gradient(
+      circle at 50% 87%,
+      rgba(31,140,180,.15),
+      transparent 36%
+    ),
+
+    radial-gradient(
+      circle at 52% 42%,
+      rgba(35,127,163,.08),
+      transparent 28%
+    ),
+
+    linear-gradient(
+      180deg,
+      #07131e 0%,
+      #071923 48%,
+      #06151d 100%
+    );
+
+}
+
+
+/* =========================================================
+   BACKGROUND
+========================================================= */
+
+.grid {
+
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 1;
+
+  opacity: .07;
+
+  background-image:
+
+    linear-gradient(
+      rgba(130,210,235,.16) 1px,
+      transparent 1px
+    ),
+
+    linear-gradient(
+      90deg,
+      rgba(130,210,235,.16) 1px,
+      transparent 1px
+    );
+
+  background-size:
+    48px 48px;
+
+}
+
+
+.sky-glow {
+
+  position: absolute;
+
+  width: 650px;
+
+  height: 320px;
+
+  right: -160px;
+
+  top: -90px;
+
+  z-index: 2;
+
+  border-radius: 50%;
+
+  background:
+    rgba(105,195,225,.09);
+
+  filter:
+    blur(100px);
+
+}
+
+
+.vignette {
+
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 6;
+
+  pointer-events: none;
+
+  background:
+
+    linear-gradient(
+      90deg,
+      rgba(0,0,0,.18),
+      transparent 45%,
+      rgba(0,0,0,.10)
+    ),
+
+    radial-gradient(
+      circle at center,
+      transparent 53%,
+      rgba(0,0,0,.27)
+    );
+
+}
+
+
+/* =========================================================
+   RAIN
+========================================================= */
+
+.rain {
+
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 4;
+
+  overflow: hidden;
+
+  pointer-events: none;
+
+}
+
+
+.rain-drop {
+
+  position: absolute;
+
+  top: -15vh;
+
+  width: 1px;
+
+  height: 48px;
+
+  opacity: .18;
+
+  transform:
+    rotate(8deg);
+
+  background:
+
+    linear-gradient(
+      transparent,
+      rgba(210,240,255,.48)
+    );
+
+}
+
+
+/* =========================================================
+   WATER
+========================================================= */
+
+.water {
+
+  position: absolute;
+
+  z-index: 5;
+
+  left: 0;
+
+  right: 0;
+
+  bottom: 0;
+
+  height: 12vh;
+
+  overflow: hidden;
+
+  background:
+
+    linear-gradient(
+      180deg,
+      rgba(50,145,185,.22),
+      rgba(5,48,75,.70)
+    );
+
+}
+
+
+.wave {
+
+  position: absolute;
+
+  left: -8%;
+
+  top: -22px;
+
+  width: 116%;
+
+  height: 60px;
+
+}
+
+
+.wave svg {
+
+  width: 100%;
+
+  height: 100%;
+
+}
+
+
+/* =========================================================
+   CONTENT
+========================================================= */
+
+.content {
+
+  position: absolute;
+
+  z-index: 20;
+
+  inset: 0;
+
+  padding:
+
+    clamp(28px,4.5vh,52px)
+
+    clamp(38px,5.5vw,95px)
+
+    clamp(65px,8vh,88px);
+
+}
+
+
+/* =========================================================
+   TOP BAR
+========================================================= */
+
+.topbar {
+
+  display: flex;
+
+  justify-content:
+    space-between;
+
+  align-items:
+    center;
+
+}
+
+
+.kicker {
+
+  color:
+    var(--cyan2);
+
+  font-size:
+    clamp(10px,.82vw,13px);
+
+  font-weight:
+    800;
+
+  letter-spacing:
+    .20em;
+
+  text-transform:
+    uppercase;
+
+}
+
+
+.brand {
+
+  color:
+    rgba(255,255,255,.30);
+
+  font-size:
+    clamp(9px,.72vw,11px);
+
+  letter-spacing:
+    .15em;
+
+}
+
+
+/* =========================================================
+   HEADING
+========================================================= */
+
+.heading-row {
+
+  margin-top:
+    clamp(15px,2.4vh,26px);
+
+  display: flex;
+
+  align-items:
+    flex-end;
+
+  justify-content:
+    space-between;
+
+  gap: 40px;
+
+}
+
+
+.heading {
+
+  opacity: 0;
+
+  transform:
+    translateY(20px);
+
+}
+
+
+.heading-label {
+
+  margin-bottom: 8px;
+
+  color:
+    rgba(220,241,250,.48);
+
+  font-size:
+    clamp(9px,.72vw,11px);
+
+  font-weight:
+    700;
+
+  letter-spacing:
+    .12em;
+
+  text-transform:
+    uppercase;
+
+}
+
+
+h1 {
+
+  margin: 0;
+
+  font-size:
+    clamp(32px,4.1vw,62px);
+
+  line-height:
+    1.02;
+
+  letter-spacing:
+    -.042em;
+
+  font-weight:
+    900;
+
+}
+
+
+.accent {
+
+  color:
+    var(--cyan);
+
+}
+
+
+.heading-note {
+
+  opacity: 0;
+
+  max-width: 330px;
+
+  color:
+    var(--muted);
+
+  font-size:
+    clamp(11px,.85vw,13px);
+
+  line-height:
+    1.48;
+
+}
+
+
+/* =========================================================
+   ARCHITECTURE
+========================================================= */
+
+.architecture {
+
+  position: relative;
+
+  margin-top:
+    clamp(20px,3vh,34px);
+
+  height:
+    clamp(480px,61vh,620px);
+
+  display: grid;
+
+  grid-template-columns:
+
+    .84fr
+
+    .12fr
+
+    1.22fr
+
+    .12fr
+
+    .82fr
+
+    .12fr
+
+    .78fr;
+
+  gap:
+    clamp(9px,1.25vw,22px);
+
+  align-items:
+    center;
+
+}
+
+
+/* =========================================================
+   COMMON CARD
+========================================================= */
+
+.stage-card {
+
+  position: relative;
+
+  overflow: hidden;
+
+  min-height:
+    var(--normal-card-height);
+
+  padding:
+    clamp(17px,1.6vw,24px);
+
+  border-radius:
+    22px;
+
+  border:
+    1px solid
+    rgba(120,223,255,.12);
+
+  background:
+    rgba(6,20,28,.76);
+
+  box-shadow:
+
+    0 22px 60px
+    rgba(0,0,0,.24),
+
+    inset 0 1px
+    rgba(255,255,255,.04);
+
+  backdrop-filter:
+    blur(14px);
+
+  transform-origin:
+    center center;
+
+}
+
+/*
+.stage-number {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  width: 30px;
+
+  height: 30px;
+
+  border-radius: 50%;
+
+  background:
+    rgba(120,223,255,.10);
+
+  border:
+    1px solid
+    rgba(120,223,255,.23);
+
+  color:
+    var(--cyan2);
+
+  font-size:
+    11px;
+
+  font-weight:
+    800;
+
+}
+*/
+
+.stage-number {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  min-width: 64px;
+
+  height: 28px;
+
+  padding:
+    0 10px;
+
+  border-radius:
+    999px;
+
+  background:
+    rgba(120,223,255,.10);
+
+  border:
+    1px solid
+    rgba(120,223,255,.23);
+
+  color:
+    var(--cyan2);
+
+  font-size:
+    10px;
+
+  font-weight:
+    800;
+
+  letter-spacing:
+    .08em;
+
+  text-transform:
+    uppercase;
+
+}
+
+.stage-icon {
+
+  width: 54px;
+
+  height: 54px;
+
+  margin-top: 18px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 16px;
+
+  background:
+
+    linear-gradient(
+      145deg,
+      rgba(120,223,255,.13),
+      rgba(120,223,255,.035)
+    );
+
+  border:
+    1px solid
+    rgba(120,223,255,.15);
+
+  color:
+    var(--cyan2);
+
+}
+
+
+.stage-icon svg {
+
+  width: 27px;
+
+  height: 27px;
+
+}
+
+
+.stage-title {
+
+  margin-top: 17px;
+
+  color: white;
+
+  font-size:
+    clamp(15px,1.2vw,19px);
+
+  line-height:
+    1.18;
+
+  font-weight:
+    800;
+
+}
+
+
+.stage-description {
+
+  margin-top: 8px;
+
+  color:
+    rgba(223,238,245,.54);
+
+  font-size:
+    clamp(10px,.76vw,12px);
+
+  line-height:
+    1.45;
+
+}
+
+
+.tech-tag {
+
+  display: inline-flex;
+
+  margin-top: 14px;
+
+  padding:
+    6px 9px;
+
+  border-radius:
+    999px;
+
+  background:
+    rgba(120,223,255,.07);
+
+  border:
+    1px solid
+    rgba(120,223,255,.13);
+
+  color:
+    rgba(184,232,249,.77);
+
+  font-size:
+    clamp(8px,.58vw,9px);
+
+  font-weight:
+    700;
+
+  letter-spacing:
+    .08em;
+
+}
+
+
+/* =========================================================
+   SOURCE
+========================================================= */
+
+.source-card {
+
+  opacity: 0;
+
+  transform:
+    translateY(20px);
+
+}
+
+
+.source-lines {
+
+  margin-top: 17px;
+
+  display: grid;
+
+  gap: 8px;
+
+}
+
+
+.source-line {
+
+  height: 7px;
+
+  border-radius:
+    999px;
+
+  background:
+    rgba(255,255,255,.08);
+
+}
+
+
+.source-line:nth-child(1) {
+
+  width: 92%;
+
+}
+
+
+.source-line:nth-child(2) {
+
+  width: 77%;
+
+}
+
+
+.source-line:nth-child(3) {
+
+  width: 86%;
+
+}
+
+
+.source-line:nth-child(4) {
+
+  width: 61%;
+
+}
+
+
+/* =========================================================
+   AI CARD
+========================================================= */
+
+.ai-card {
+
+  opacity: 0;
+
+  transform:
+    translateY(22px)
+    scale(.97);
+
+  /*
+     IMPORTANT:
+
+     AI is NO LONGER permanently 390px.
+
+     It now starts at the same normal height
+     as every other stage.
+  */
+
+  min-height:
+    var(--normal-card-height);
+
+  border:
+    1px solid
+    rgba(120,223,255,.20);
+
+  background:
+
+    linear-gradient(
+      145deg,
+      rgba(39,129,164,.10),
+      rgba(6,20,28,.84)
+    );
+
+}
+
+
+.ai-top {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content:
+    space-between;
+
+  gap: 12px;
+
+}
+
+
+.ai-badge {
+
+  padding:
+    6px 10px;
+
+  border-radius:
+    999px;
+
+  background:
+    rgba(120,223,255,.08);
+
+  border:
+    1px solid
+    rgba(120,223,255,.18);
+
+  color:
+    var(--cyan2);
+
+  font-size:
+    9px;
+
+  font-weight:
+    800;
+
+  letter-spacing:
+    .10em;
+
+}
+
+
+/* =========================================================
+   EVENT → INCIDENT → IMPACT
+========================================================= */
+
+.model-heading {
+
+  margin-top: 19px;
+
+  color:
+    rgba(255,255,255,.45);
+
+  font-size:
+    9px;
+
+  font-weight:
+    800;
+
+  letter-spacing:
+    .13em;
+
+  text-transform:
+    uppercase;
+
+}
+
+
+.knowledge-model {
+
+  position: relative;
+
+  margin-top: 13px;
+
+  display: grid;
+
+  grid-template-columns:
+
+    1fr
+
+    26px
+
+    1fr
+
+    26px
+
+    1fr;
+
+  align-items:
+    stretch;
+
+}
+
+
+.entity {
+
+  opacity: 0;
+
+  transform:
+    translateY(10px);
+
+  min-height:
+    150px;
+
+  padding:
+    14px 11px;
+
+  display: flex;
+
+  flex-direction:
+    column;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  text-align:
+    center;
+
+  border-radius:
+    16px;
+
+  border:
+    1px solid
+    rgba(120,223,255,.18);
+
+  background:
+
+    linear-gradient(
+      160deg,
+      rgba(120,223,255,.08),
+      rgba(255,255,255,.025)
+    );
+
+  transform-origin:
+    center center;
+
+}
+
+
+.entity-icon {
+
+  width: 38px;
+
+  height: 38px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  margin-bottom: 8px;
+
+  border-radius: 12px;
+
+  background:
+    rgba(120,223,255,.09);
+
+  color:
+    var(--cyan2);
+
+}
+
+
+.entity-icon svg {
+
+  width: 19px;
+
+  height: 19px;
+
+}
+
+
+.entity-label {
+
+  color:
+    var(--cyan2);
+
+  font-size:
+    clamp(8px,.62vw,10px);
+
+  font-weight:
+    900;
+
+  letter-spacing:
+    .11em;
+
+}
+
+
+.entity-example {
+
+  margin-top: 6px;
+
+  color: white;
+
+  font-size:
+    clamp(10px,.73vw,12px);
+
+  line-height:
+    1.35;
+
+  font-weight:
+    700;
+
+}
+
+
+.entity-arrow {
+
+  opacity: 0;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  color:
+    var(--cyan);
+
+  font-size:
+    20px;
+
+  font-weight:
+    300;
+
+}
+
+
+.model-caption {
+
+  opacity: 0;
+
+  margin-top: 13px;
+
+  color:
+    rgba(228,243,249,.57);
+
+  font-size:
+    clamp(9px,.69vw,11px);
+
+  line-height:
+    1.42;
+
+  text-align:
+    center;
+
+}
+
+
+/* =========================================================
+   DATABASE
+========================================================= */
+
+.database-card {
+
+  opacity: 0;
+
+  transform:
+    translateY(22px)
+    scale(.97);
+
+}
+
+
+.database-stack {
+
+  position: relative;
+
+  width: 92px;
+
+  height: 95px;
+
+  margin:
+    19px auto 8px;
+
+}
+
+
+.db-disc {
+
+  position: absolute;
+
+  left: 50%;
+
+  width: 80px;
+
+  height: 29px;
+
+  transform:
+    translateX(-50%);
+
+  border-radius:
+    50%;
+
+  border:
+    1px solid
+    rgba(120,223,255,.32);
+
+  background:
+    rgba(26,95,122,.35);
+
+}
+
+
+.db-disc:nth-child(1) {
+
+  top: 0;
+
+}
+
+
+.db-disc:nth-child(2) {
+
+  top: 20px;
+
+}
+
+
+.db-disc:nth-child(3) {
+
+  top: 40px;
+
+}
+
+
+.db-disc:nth-child(4) {
+
+  top: 60px;
+
+}
+
+
+.before-after {
+
+  margin-top: 15px;
+
+  display: grid;
+
+  grid-template-columns:
+    1fr auto 1fr;
+
+  gap: 7px;
+
+  align-items:
+    center;
+
+}
+
+
+.before-after span {
+
+  padding:
+    7px 6px;
+
+  border-radius:
+    10px;
+
+  text-align:
+    center;
+
+  font-size:
+    8px;
+
+  font-weight:
+    700;
+
+}
+
+
+.unstructured {
+
+  color:
+    rgba(255,255,255,.46);
+
+  background:
+    rgba(255,255,255,.035);
+
+}
+
+
+.structured {
+
+  color:
+    var(--cyan2);
+
+  background:
+    rgba(120,223,255,.08);
+
+}
+
+
+.transform-arrow {
+
+  color:
+    rgba(120,223,255,.60);
+
+}
+
+
+/* =========================================================
+   DASHBOARD
+========================================================= */
+
+.dashboard-card {
+
+  opacity: 0;
+
+  transform:
+    translateY(22px)
+    scale(.97);
+
+}
+
+
+.mini-dashboard {
+
+  margin-top: 17px;
+
+  padding: 10px;
+
+  border-radius:
+    14px;
+
+  background:
+    rgba(4,14,20,.65);
+
+  border:
+    1px solid
+    rgba(120,223,255,.12);
+
+}
+
+
+.mini-top {
+
+  display: flex;
+
+  gap: 4px;
+
+  margin-bottom: 9px;
+
+}
+
+
+.mini-dot {
+
+  width: 5px;
+
+  height: 5px;
+
+  border-radius: 50%;
+
+  background:
+    rgba(255,255,255,.25);
+
+}
+
+
+.mini-layout {
+
+  display: grid;
+
+  grid-template-columns:
+    1.15fr .85fr;
+
+  gap: 7px;
+
+  height: 96px;
+
+}
+
+
+.map-box {
+
+  position: relative;
+
+  border-radius: 9px;
+
+  background:
+
+    radial-gradient(
+      circle at 55% 45%,
+      rgba(120,223,255,.08),
+      transparent 55%
+    ),
+
+    rgba(255,255,255,.025);
+
+  overflow: hidden;
+
+}
+
+
+.nz-shape {
+
+  position: absolute;
+
+  left: 47%;
+
+  top: 10px;
+
+  width: 17px;
+
+  height: 70px;
+
+  border:
+    2px solid
+    rgba(120,223,255,.35);
+
+  border-radius:
+    70% 30% 60% 40%;
+
+  transform:
+    rotate(23deg);
+
+}
+
+
+.map-point {
+
+  position: absolute;
+
+  width: 7px;
+
+  height: 7px;
+
+  border-radius: 50%;
+
+  background:
+    var(--cyan);
+
+  box-shadow:
+
+    0 0 12px
+    rgba(120,223,255,.65);
+
+}
+
+
+.p1 {
+
+  left: 56%;
+
+  top: 25%;
+
+}
+
+
+.p2 {
+
+  left: 45%;
+
+  top: 53%;
+
+}
+
+
+.p3 {
+
+  left: 53%;
+
+  top: 71%;
+
+}
+
+
+.chart-box {
+
+  display: flex;
+
+  align-items:
+    flex-end;
+
+  justify-content:
+    space-around;
+
+  gap: 4px;
+
+  padding:
+    12px 7px 8px;
+
+  border-radius:
+    9px;
+
+  background:
+    rgba(255,255,255,.025);
+
+}
+
+
+.bar {
+
+  width: 12%;
+
+  border-radius:
+    4px 4px 2px 2px;
+
+  background:
+
+    linear-gradient(
+      180deg,
+      var(--cyan),
+      rgba(120,223,255,.20)
+    );
+
+}
+
+
+.bar1 {
+
+  height: 35%;
+
+}
+
+
+.bar2 {
+
+  height: 63%;
+
+}
+
+
+.bar3 {
+
+  height: 48%;
+
+}
+
+
+.bar4 {
+
+  height: 82%;
+
+}
+
+
+.bar5 {
+
+  height: 57%;
+
+}
+
+
+/* =========================================================
+   CONNECTORS
+========================================================= */
+
+.connector {
+
+  opacity: 0;
+
+  transform:
+    scaleX(0);
+
+  transform-origin:
+    left center;
+
+  position: relative;
+
+  height: 2px;
+
+  background:
+
+    linear-gradient(
+      90deg,
+      rgba(120,223,255,.10),
+      var(--cyan)
+    );
+
+}
+
+
+.connector::after {
+
+  content: "";
+
+  position: absolute;
+
+  right: -1px;
+
+  top: -4px;
+
+  width: 8px;
+
+  height: 8px;
+
+  border-top:
+    2px solid var(--cyan);
+
+  border-right:
+    2px solid var(--cyan);
+
+  transform:
+    rotate(45deg);
+
+}
+
+
+/* =========================================================
+   FLOW SUMMARY
+========================================================= */
+
+.flow-summary {
+
+  opacity: 0;
+
+  position: absolute;
+
+  left: 50%;
+
+  bottom:
+    clamp(8px,1.2vh,14px);
+
+  transform:
+    translateX(-50%)
+    translateY(8px);
+
+  z-index: 40;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 10px;
+
+  width:
+    min(82vw,1180px);
+
+  padding:
+    8px 14px;
+
+  border-radius:
+    999px;
+
+  background:
+    rgba(5,23,32,.92);
+
+  border:
+    1px solid
+    rgba(120,223,255,.16);
+
+  box-shadow:
+
+    0 8px 28px
+    rgba(0,0,0,.22);
+
+  color:
+    rgba(227,244,251,.66);
+
+  font-size:
+    clamp(8px,.62vw,10px);
+
+  white-space:
+    nowrap;
+
+  backdrop-filter:
+    blur(10px);
+
+}
+
+
+.flow-summary strong {
+
+  color: white;
+
+}
+
+
+.flow-dot {
+
+  width: 7px;
+
+  height: 7px;
+
+  flex:
+    0 0 7px;
+
+  border-radius:
+    50%;
+
+  background:
+    var(--cyan);
+
+  box-shadow:
+
+    0 0 12px
+    rgba(120,223,255,.65);
+
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width:1100px) {
+
+  .architecture {
+
+    grid-template-columns:
+      .9fr .10fr 1.2fr .10fr .82fr .10fr .78fr;
+
+  }
+
+
+  .stage-card {
+
+    padding:
+      15px;
+
+  }
+
+
+  .entity {
+
+    padding:
+      10px 7px;
+
+  }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="slide">
+
+
+<!-- BACKGROUND -->
+
+<div class="grid"></div>
+
+<div class="sky-glow"></div>
+
+
+<div
+  class="rain"
+  id="rain"
+></div>
+
+
+<div class="vignette"></div>
+
+
+<div class="water">
+
+
+<div class="wave">
+
+
+<svg
+  viewBox="0 0 1600 80"
+  preserveAspectRatio="none"
+>
+
+
+<path
+
+  d="
+    M0,40
+    C160,0 320,80 480,40
+    C640,0 800,80 960,40
+    C1120,0 1280,80 1440,40
+    C1510,22 1560,25 1600,40
+    L1600,80
+    L0,80
+    Z
+  "
+
+  fill="rgba(82,183,222,.52)"
+
+/>
+
+
+</svg>
+
+
+</div>
+
+
+</div>
+
+
+<!-- CONTENT -->
+
+<div class="content">
+
+
+<div class="topbar">
+
+
+<div class="kicker">
+
+  How I Am Solving It
+
+</div>
+
+
+<div class="brand">
+
+  AI-POWERED FLOOD DATA EXTRACTION
+
+</div>
+
+
+</div>
+
+
+<div class="heading-row">
+
+
+<div
+  class="heading"
+  id="heading"
+>
+
+
+<div class="heading-label">
+
+  From flood news articles to usable data
+
+</div>
+
+
+<h1>
+
+  A simple journey from
+
+  <span class="accent">
+
+    news to insight.
+
+  </span>
+
+</h1>
+
+
+</div>
+
+
+<div
+  class="heading-note"
+  id="headingNote"
+>
+
+  Each stage turns scattered flood reporting
+  into information that can be searched,
+  compared and understood.
+
+</div>
+
+
+</div>
+
+
+<!-- =====================================================
+     ARCHITECTURE
+===================================================== -->
+
+<div class="architecture">
+
+
+<!-- ===================================================
+     SOURCE
+=================================================== -->
+
+<div
+  class="stage-card source-card"
+  id="sourceCard"
+>
+
+
+<div class="stage-number">
+
+  Step 1
+
+</div>
+
+
+<div class="stage-icon">
+
+
+<svg
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.7"
+>
+
+
+<path
+  d="M4 4h16v16H4z"
+/>
+
+
+<path
+  d="M7 8h10M7 12h7M7 16h8"
+/>
+
+
+</svg>
+
+
+</div>
+
+
+<div class="stage-title">
+
+  Collect flood news articles
+
+</div>
+
+
+<div class="stage-description">
+
+  Flood-related news and archive records
+  are collected from DigitalNZ.
+
+</div>
+
+
+<div class="source-lines">
+
+<div class="source-line"></div>
+
+<div class="source-line"></div>
+
+<div class="source-line"></div>
+
+<div class="source-line"></div>
+
+</div>
+
+
+<div class="tech-tag">
+
+  DIGITALNZ · NEWS & ARCHIVES
+
+</div>
+
+
+</div>
+
+
+<div
+  class="connector"
+  id="connector1"
+></div>
+
+
+<!-- ===================================================
+     AI
+=================================================== -->
+
+<div
+  class="stage-card ai-card"
+  id="aiCard"
+>
+
+
+<div class="ai-top">
+
+
+<div class="stage-number">
+
+  Step 2
+
+</div>
+
+
+<div class="ai-badge">
+
+  AI EXTRACTION
+
+</div>
+
+
+</div>
+
+
+<div class="stage-icon">
+
+
+<svg
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.7"
+>
+
+
+<path
+  d="M12 3v3M12 18v3M3 12h3M18 12h3"
+/>
+
+
+<circle
+  cx="12"
+  cy="12"
+  r="5"
+/>
+
+
+<path
+  d="M9.5 12h5M12 9.5v5"
+/>
+
+
+</svg>
+
+
+</div>
+
+
+<div class="stage-title">
+
+  AI reads the articles
+
+</div>
+
+
+<div class="stage-description">
+
+  Python and OpenAI identify the flood event
+  and extract meaningful consequences from the text.
+
+</div>
+
+
+<div class="tech-tag">
+
+  PYTHON · OPENAI API · VS CODE
+
+</div>
+
+
+<div class="model-heading">
+
+  The structure created from every article
+
+</div>
+
+
+<div class="knowledge-model">
+
+
+<div
+  class="entity"
+  id="entityEvent"
+>
+
+
+<div class="entity-icon">
+
+
+<svg
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.7"
+>
+
+
+<circle
+  cx="12"
+  cy="12"
+  r="8"
+/>
+
+
+<path
+  d="M12 7v5l3 2"
+/>
+
+
+</svg>
+
+
+</div>
+
+
+<div class="entity-label">
+
+  EVENT
+
+</div>
+
+
+<div class="entity-example">
+
+  Cyclone Gabrielle
+
+</div>
+
+
+</div>
+
+
+<div
+  class="entity-arrow"
+  id="entityArrow1"
+>
+
+  →
+
+</div>
+
+
+<div
+  class="entity"
+  id="entityIncident"
+>
+
+
+<div class="entity-icon">
+
+
+<svg
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.7"
+>
+
+
+<path
+  d="M3 17c3-4 6-4 9 0s6 4 9 0"
+/>
+
+
+<path
+  d="M3 12c3-4 6-4 9 0s6 4 9 0"
+/>
+
+
+</svg>
+
+
+</div>
+
+
+<div class="entity-label">
+
+  INCIDENT
+
+</div>
+
+
+<div class="entity-example">
+
+  Flooding & road damage
+
+</div>
+
+
+</div>
+
+
+<div
+  class="entity-arrow"
+  id="entityArrow2"
+>
+
+  →
+
+</div>
+
+
+<div
+  class="entity"
+  id="entityImpact"
+>
+
+
+<div class="entity-icon">
+
+
+<svg
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.7"
+>
+
+
+<path
+  d="M12 3L2.8 19h18.4z"
+/>
+
+
+<path
+  d="M12 9v4M12 16h.01"
+/>
+
+
+</svg>
+
+
+</div>
+
+
+<div class="entity-label">
+
+  IMPACT
+
+</div>
+
+
+<div class="entity-example">
+
+  Community cut off
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+<div
+  class="model-caption"
+  id="modelCaption"
+>
+
+  Event tells us what happened.
+  Incident tells us what occurred.
+  Impact tells us what it caused.
+
+</div>
+
+
+</div>
+
+
+<div
+  class="connector"
+  id="connector2"
+></div>
+
+
+<!-- ===================================================
+     DATABASE
+=================================================== -->
+
+<div
+  class="stage-card database-card"
+  id="databaseCard"
+>
+
+
+<div class="stage-number">
+
+  Step 3
+
+</div>
+
+
+<div class="stage-icon">
+
+
+<svg
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.7"
+>
+
+
+<ellipse
+  cx="12"
+  cy="5"
+  rx="7"
+  ry="3"
+/>
+
+
+<path
+  d="M5 5v6c0 1.7 3.1 3 7 3s7-1.3 7-3V5"
+/>
+
+
+<path
+  d="M5 11v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6"
+/>
+
+
+</svg>
+
+
+</div>
+
+
+<div class="stage-title">
+
+  Store it as structured data
+
+</div>
+
+
+<div class="stage-description">
+
+  Extracted records are organised and stored
+  so they can be queried later.
+
+</div>
+
+
+<div class="database-stack">
+
+<div class="db-disc"></div>
+
+<div class="db-disc"></div>
+
+<div class="db-disc"></div>
+
+<div class="db-disc"></div>
+
+</div>
+
+
+<div class="before-after">
+
+
+<span class="unstructured">
+
+  TEXT
+
+</span>
+
+
+<span class="transform-arrow">
+
+  →
+
+</span>
+
+
+<span class="structured">
+
+  DATA
+
+</span>
+
+
+</div>
+
+
+<div class="tech-tag">
+
+  POSTGRESQL
+
+</div>
+
+
+</div>
+
+
+<div
+  class="connector"
+  id="connector3"
+></div>
+
+
+<!-- ===================================================
+     DASHBOARD
+=================================================== -->
+
+<div
+  class="stage-card dashboard-card"
+  id="dashboardCard"
+>
+
+
+<div class="stage-number">
+
+  Step 4
+
+</div>
+
+
+<div class="stage-icon">
+
+
+<svg
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.7"
+>
+
+
+<rect
+  x="3"
+  y="4"
+  width="18"
+  height="16"
+  rx="2"
+/>
+
+
+<path
+  d="M7 15v2M11 12v5M15 9v8M19 13v4"
+/>
+
+
+</svg>
+
+
+</div>
+
+
+<div class="stage-title">
+
+  Explore the result
+
+</div>
+
+
+<div class="stage-description">
+
+  A dashboard turns the database into
+  maps, filters, evidence and understandable insights.
+
+</div>
+
+
+<div class="mini-dashboard">
+
+
+<div class="mini-top">
+
+<div class="mini-dot"></div>
+
+<div class="mini-dot"></div>
+
+<div class="mini-dot"></div>
+
+</div>
+
+
+<div class="mini-layout">
+
+
+<div class="map-box">
+
+<div class="nz-shape"></div>
+
+<div class="map-point p1"></div>
+
+<div class="map-point p2"></div>
+
+<div class="map-point p3"></div>
+
+</div>
+
+
+<div class="chart-box">
+
+<div class="bar bar1"></div>
+
+<div class="bar bar2"></div>
+
+<div class="bar bar3"></div>
+
+<div class="bar bar4"></div>
+
+<div class="bar bar5"></div>
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+<div class="tech-tag">
+
+  DASH · PLOTLY
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+<!-- FINAL FLOW -->
+
+<div
+  class="flow-summary"
+  id="flowSummary"
+>
+
+
+<div class="flow-dot"></div>
+
+
+<div>
+
+  <strong>
+    News
+  </strong>
+
+  → AI extraction →
+
+  <strong>
+    Event · Incident · Impact
+  </strong>
+
+  → Database → Dashboard
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+<script
+  src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"
+></script>
+
+
+<script>
+
+/* =========================================================
+   RAIN
+========================================================= */
+
+const rain =
+  document.getElementById(
+    "rain"
+  );
+
+
+for (
+  let i = 0;
+  i < 55;
+  i++
+) {
+
+
+  const drop =
+    document.createElement(
+      "div"
+    );
+
+
+  drop.className =
+    "rain-drop";
+
+
+  drop.style.left =
+    Math.random()
+    * 105
+    + "%";
+
+
+  drop.style.height =
+    (
+      20
+      +
+      Math.random()
+      * 45
+    )
+    + "px";
+
+
+  drop.style.opacity =
+    .08
+    +
+    Math.random()
+    * .22;
+
+
+  rain.appendChild(
+    drop
+  );
+
+
+  gsap.to(
+    drop,
+    {
+
+      y:
+        window.innerHeight
+        * 1.35,
+
+      x:
+        60,
+
+      duration:
+        .9
+        +
+        Math.random()
+        * .8,
+
+      delay:
+        Math.random()
+        * 1.8,
+
+      repeat:
+        -1,
+
+      ease:
+        "none"
+
+    }
+  );
+
+
+}
+
+
+/* WATER */
+
+gsap.to(
+  ".wave",
+  {
+
+    x:
+      -85,
+
+    duration:
+      3.2,
+
+    repeat:
+      -1,
+
+    yoyo:
+      true,
+
+    ease:
+      "sine.inOut"
+
+  }
+);
+
+
+/* =========================================================
+   CARD VISUAL STATES
+========================================================= */
+
+const NORMAL_HEIGHT =
+  245;
+
+
+const ACTIVE_HEIGHT =
+  390;
+
+
+const NORMAL_SHADOW =
+  "0 22px 60px rgba(0,0,0,.24), inset 0 1px rgba(255,255,255,.04)";
+
+
+const ACTIVE_SHADOW =
+  "0 0 0 1px rgba(120,223,255,.28), 0 32px 95px rgba(22,140,185,.30), inset 0 1px rgba(255,255,255,.07)";
+
+
+const NORMAL_BORDER =
+  "rgba(120,223,255,.12)";
+
+
+const ACTIVE_BORDER =
+  "rgba(120,223,255,.62)";
+
+
+/* =========================================================
+   MAKE CARD ACTIVE
+========================================================= */
+
+function activateCard(
+  selector
+) {
+
+
+  gsap.to(
+    selector,
+    {
+
+      minHeight:
+        ACTIVE_HEIGHT,
+
+      scale:
+        1.025,
+
+      borderColor:
+        ACTIVE_BORDER,
+
+      boxShadow:
+        ACTIVE_SHADOW,
+
+      zIndex:
+        10,
+
+      duration:
+        .55,
+
+      ease:
+        "power3.out"
+
+    }
+  );
+
+
+}
+
+
+/* =========================================================
+   RETURN CARD TO NORMAL
+========================================================= */
+
+function normaliseCard(
+  selector
+) {
+
+
+  gsap.to(
+    selector,
+    {
+
+      minHeight:
+        NORMAL_HEIGHT,
+
+      scale:
+        1,
+
+      borderColor:
+        NORMAL_BORDER,
+
+      boxShadow:
+        NORMAL_SHADOW,
+
+      zIndex:
+        1,
+
+      duration:
+        .48,
+
+      ease:
+        "power3.out"
+
+    }
+  );
+
+
+}
+
+
+/* =========================================================
+   MODEL FOCUS
+========================================================= */
+
+function focusKnowledgeModel() {
+
+
+  gsap.to(
+    [
+      "#entityEvent",
+      "#entityIncident",
+      "#entityImpact"
+    ],
+    {
+
+      scale:
+        1.045,
+
+      borderColor:
+        "rgba(120,223,255,.68)",
+
+      boxShadow:
+        "0 15px 38px rgba(25,150,195,.24)",
+
+      duration:
+        .38,
+
+      stagger:
+        .06
+
+    }
+  );
+
+
+  gsap.to(
+    [
+      "#entityArrow1",
+      "#entityArrow2"
+    ],
+    {
+
+      color:
+        "#c3f4ff",
+
+      textShadow:
+        "0 0 16px rgba(120,223,255,.70)",
+
+      duration:
+        .30
+
+    }
+  );
+
+
+}
+
+
+/* =========================================================
+   MODEL NORMAL
+========================================================= */
+
+function normaliseKnowledgeModel() {
+
+
+  gsap.to(
+    [
+      "#entityEvent",
+      "#entityIncident",
+      "#entityImpact"
+    ],
+    {
+
+      scale:
+        1,
+
+      borderColor:
+        "rgba(120,223,255,.18)",
+
+      boxShadow:
+        "none",
+
+      duration:
+        .35
+
+    }
+  );
+
+
+  gsap.to(
+    [
+      "#entityArrow1",
+      "#entityArrow2"
+    ],
+    {
+
+      color:
+        "#78dfff",
+
+      textShadow:
+        "none",
+
+      duration:
+        .30
+
+    }
+  );
+
+
+}
+
+
+/* =========================================================
+   INITIAL ENTRANCE
+========================================================= */
+
+function initialEntrance() {
+
+
+  gsap.set(
+    "#heading",
+    {
+
+      opacity:
+        0,
+
+      y:
+        20
+
+    }
+  );
+
+
+  gsap.set(
+    "#headingNote",
+    {
+
+      opacity:
+        0,
+
+      y:
+        12
+
+    }
+  );
+
+
+  gsap.set(
+    "#sourceCard",
+    {
+
+      opacity:
+        0,
+
+      y:
+        20,
+
+      minHeight:
+        NORMAL_HEIGHT
+
+    }
+  );
+
+
+  gsap.set(
+    [
+      "#connector1",
+      "#connector2",
+      "#connector3"
+    ],
+    {
+
+      opacity:
+        0,
+
+      scaleX:
+        0
+
+    }
+  );
+
+
+  gsap.set(
+    [
+      "#aiCard",
+      "#databaseCard",
+      "#dashboardCard"
+    ],
+    {
+
+      opacity:
+        0,
+
+      y:
+        22,
+
+      scale:
+        .97,
+
+      minHeight:
+        NORMAL_HEIGHT
+
+    }
+  );
+
+
+  gsap.set(
+    [
+      "#entityEvent",
+      "#entityIncident",
+      "#entityImpact"
+    ],
+    {
+
+      opacity:
+        0,
+
+      y:
+        10
+
+    }
+  );
+
+
+  gsap.set(
+    [
+      "#entityArrow1",
+      "#entityArrow2",
+      "#modelCaption",
+      "#flowSummary"
+    ],
+    {
+
+      opacity:
+        0
+
+    }
+  );
+
+
+  const tl =
+    gsap.timeline();
+
+
+  tl.to(
+    "#heading",
+    {
+
+      opacity:
+        1,
+
+      y:
+        0,
+
+      duration:
+        .75,
+
+      ease:
+        "power3.out"
+
+    },
+    .1
+  );
+
+
+  tl.to(
+    "#headingNote",
+    {
+
+      opacity:
+        1,
+
+      y:
+        0,
+
+      duration:
+        .45
+
+    },
+    .45
+  );
+
+
+  tl.to(
+    "#sourceCard",
+    {
+
+      opacity:
+        1,
+
+      y:
+        0,
+
+      duration:
+        .65,
+
+      ease:
+        "power3.out"
+
+    },
+    .62
+  );
+
+
+  /*
+     STEP 1 becomes large.
+  */
+
+  tl.to(
+    "#sourceCard",
+    {
+
+      minHeight:
+        ACTIVE_HEIGHT,
+
+      scale:
+        1.025,
+
+      borderColor:
+        ACTIVE_BORDER,
+
+      boxShadow:
+        ACTIVE_SHADOW,
+
+      duration:
+        .55,
+
+      ease:
+        "power3.out"
+
+    },
+    1.05
+  );
+
+
+}
+
+
+/* =========================================================
+   STEP STATE
+========================================================= */
+
+let currentStep =
+  1;
+
+
+const MAX_STEP =
+  5;
+
+
+/* =========================================================
+   STEP 2
+========================================================= */
+
+function showAIStage() {
+
+
+  /*
+     Step 1 shrinks.
+  */
+
+  normaliseCard(
+    "#sourceCard"
+  );
+
+
+  const tl =
+    gsap.timeline();
+
+
+  tl.to(
+    "#connector1",
+    {
+
+      opacity:
+        1,
+
+      scaleX:
+        1,
+
+      duration:
+        .45,
+
+      ease:
+        "power2.out"
+
+    }
+  );
+
+
+  tl.to(
+    "#aiCard",
+    {
+
+      opacity:
+        1,
+
+      y:
+        0,
+
+      scale:
+        1,
+
+      duration:
+        .60,
+
+      ease:
+        "power3.out"
+
+    },
+    .18
+  );
+
+
+  /*
+     Step 2 grows to same large design.
+  */
+
+  tl.to(
+    "#aiCard",
+    {
+
+      minHeight:
+        ACTIVE_HEIGHT,
+
+      scale:
+        1.025,
+
+      borderColor:
+        ACTIVE_BORDER,
+
+      boxShadow:
+        ACTIVE_SHADOW,
+
+      zIndex:
+        10,
+
+      duration:
+        .55,
+
+      ease:
+        "power3.out"
+
+    },
+    .62
+  );
+
+
+}
+
+
+function hideAIStage() {
+
+
+  normaliseCard(
+    "#aiCard"
+  );
+
+
+  activateCard(
+    "#sourceCard"
+  );
+
+
+  gsap.to(
+    "#aiCard",
+    {
+
+      opacity:
+        0,
+
+      y:
+        22,
+
+      scale:
+        .97,
+
+      duration:
+        .40,
+
+      delay:
+        .10
+
+    }
+  );
+
+
+  gsap.to(
+    "#connector1",
+    {
+
+      opacity:
+        0,
+
+      scaleX:
+        0,
+
+      duration:
+        .32,
+
+      delay:
+        .12
+
+    }
+  );
+
+
+}
+
+
+/* =========================================================
+   STEP 3
+   EVENT → INCIDENT → IMPACT
+========================================================= */
+
+function showKnowledgeModel() {
+
+
+  /*
+     AI stays as the enlarged active architecture block
+     because Event / Incident / Impact lives inside it.
+  */
+
+  activateCard(
+    "#aiCard"
+  );
+
+
+  const tl =
+    gsap.timeline();
+
+
+  tl.to(
+    "#entityEvent",
+    {
+
+      opacity:
+        1,
+
+      y:
+        0,
+
+      duration:
+        .38,
+
+      ease:
+        "power3.out"
+
+    }
+  );
+
+
+  tl.to(
+    "#entityArrow1",
+    {
+
+      opacity:
+        1,
+
+      duration:
+        .22
+
+    },
+    .27
+  );
+
+
+  tl.to(
+    "#entityIncident",
+    {
+
+      opacity:
+        1,
+
+      y:
+        0,
+
+      duration:
+        .38,
+
+      ease:
+        "power3.out"
+
+    },
+    .40
+  );
+
+
+  tl.to(
+    "#entityArrow2",
+    {
+
+      opacity:
+        1,
+
+      duration:
+        .22
+
+    },
+    .68
+  );
+
+
+  tl.to(
+    "#entityImpact",
+    {
+
+      opacity:
+        1,
+
+      y:
+        0,
+
+      duration:
+        .38,
+
+      ease:
+        "power3.out"
+
+    },
+    .80
+  );
+
+
+  tl.to(
+    "#modelCaption",
+    {
+
+      opacity:
+        1,
+
+      duration:
+        .42
+
+    },
+    1.10
+  );
+
+
+  tl.to(
+    [
+      "#entityEvent",
+      "#entityIncident",
+      "#entityImpact"
+    ],
+    {
+
+      scale:
+        1.045,
+
+      borderColor:
+        "rgba(120,223,255,.68)",
+
+      boxShadow:
+        "0 15px 38px rgba(25,150,195,.24)",
+
+      duration:
+        .38,
+
+      stagger:
+        .06
+
+    },
+    1.12
+  );
+
+
+  tl.to(
+    [
+      "#entityArrow1",
+      "#entityArrow2"
+    ],
+    {
+
+      color:
+        "#c3f4ff",
+
+      textShadow:
+        "0 0 16px rgba(120,223,255,.70)",
+
+      duration:
+        .30
+
+    },
+    1.12
+  );
+
+
+}
+
+
+function hideKnowledgeModel() {
+
+
+  normaliseKnowledgeModel();
+
+
+  /*
+     Going back means AI itself becomes
+     Step 2 active again.
+  */
+
+  activateCard(
+    "#aiCard"
+  );
+
+
+  gsap.to(
+    "#modelCaption",
+    {
+
+      opacity:
+        0,
+
+      duration:
+        .20
+
+    }
+  );
+
+
+  gsap.to(
+    [
+      "#entityEvent",
+      "#entityIncident",
+      "#entityImpact"
+    ],
+    {
+
+      opacity:
+        0,
+
+      y:
+        10,
+
+      scale:
+        1,
+
+      duration:
+        .30
+
+    }
+  );
+
+
+  gsap.to(
+    [
+      "#entityArrow1",
+      "#entityArrow2"
+    ],
+    {
+
+      opacity:
+        0,
+
+      duration:
+        .22
+
+    }
+  );
+
+
+}
+
+
+/* =========================================================
+   STEP 4
+   DATABASE
+========================================================= */
+
+function showDatabase() {
+
+
+  /*
+     Previous AI stage loses highlight.
+  */
+
+  normaliseCard(
+    "#aiCard"
+  );
+
+
+  normaliseKnowledgeModel();
+
+
+  const tl =
+    gsap.timeline();
+
+
+  tl.to(
+    "#connector2",
+    {
+
+      opacity:
+        1,
+
+      scaleX:
+        1,
+
+      duration:
+        .45
+
+    }
+  );
+
+
+  tl.to(
+    "#databaseCard",
+    {
+
+      opacity:
+        1,
+
+      y:
+        0,
+
+      scale:
+        1,
+
+      duration:
+        .60,
+
+      ease:
+        "power3.out"
+
+    },
+    .18
+  );
+
+
+  tl.fromTo(
+    ".db-disc",
+    {
+
+      opacity:
+        .20,
+
+      y:
+        -5
+
+    },
+
+    {
+
+      opacity:
+        1,
+
+      y:
+        0,
+
+      stagger:
+        .09,
+
+      duration:
+        .30
+
+    },
+    .42
+  );
+
+
+  /*
+     Database gets exactly the same
+     active size/design.
+  */
+
+  tl.to(
+    "#databaseCard",
+    {
+
+      minHeight:
+        ACTIVE_HEIGHT,
+
+      scale:
+        1.025,
+
+      borderColor:
+        ACTIVE_BORDER,
+
+      boxShadow:
+        ACTIVE_SHADOW,
+
+      zIndex:
+        10,
+
+      duration:
+        .55,
+
+      ease:
+        "power3.out"
+
+    },
+    .72
+  );
+
+
+}
+
+
+function hideDatabase() {
+
+
+  normaliseCard(
+    "#databaseCard"
+  );
+
+
+  /*
+     Returning to Step 3:
+     AI/model becomes focus again.
+  */
+
+  activateCard(
+    "#aiCard"
+  );
+
+
+  focusKnowledgeModel();
+
+
+  gsap.to(
+    "#databaseCard",
+    {
+
+      opacity:
+        0,
+
+      y:
+        22,
+
+      scale:
+        .97,
+
+      duration:
+        .38,
+
+      delay:
+        .08
+
+    }
+  );
+
+
+  gsap.to(
+    "#connector2",
+    {
+
+      opacity:
+        0,
+
+      scaleX:
+        0,
+
+      duration:
+        .30,
+
+      delay:
+        .10
+
+    }
+  );
+
+
+}
+
+
+/* =========================================================
+   STEP 5
+   DASHBOARD
+========================================================= */
+
+function showDashboard() {
+
+
+  /*
+     Database returns to normal size.
+  */
+
+  normaliseCard(
+    "#databaseCard"
+  );
+
+
+  const tl =
+    gsap.timeline();
+
+
+  tl.to(
+    "#connector3",
+    {
+
+      opacity:
+        1,
+
+      scaleX:
+        1,
+
+      duration:
+        .45
+
+    }
+  );
+
+
+  tl.to(
+    "#dashboardCard",
+    {
+
+      opacity:
+        1,
+
+      y:
+        0,
+
+      scale:
+        1,
+
+      duration:
+        .60,
+
+      ease:
+        "power3.out"
+
+    },
+    .18
+  );
+
+
+  /*
+     Dashboard becomes large featured card.
+  */
+
+  tl.to(
+    "#dashboardCard",
+    {
+
+      minHeight:
+        ACTIVE_HEIGHT,
+
+      scale:
+        1.025,
+
+      borderColor:
+        ACTIVE_BORDER,
+
+      boxShadow:
+        ACTIVE_SHADOW,
+
+      zIndex:
+        10,
+
+      duration:
+        .55,
+
+      ease:
+        "power3.out"
+
+    },
+    .70
+  );
+
+
+  gsap.to(
+    ".map-point",
+    {
+
+      scale:
+        1.45,
+
+      duration:
+        .70,
+
+      stagger:
+        .12,
+
+      repeat:
+        1,
+
+      yoyo:
+        true,
+
+      delay:
+        .55,
+
+      ease:
+        "sine.inOut"
+
+    }
+  );
+
+
+  gsap.to(
+    "#flowSummary",
+    {
+
+      opacity:
+        1,
+
+      y:
+        0,
+
+      duration:
+        .50,
+
+      delay:
+        .70,
+
+      ease:
+        "power3.out"
+
+    }
+  );
+
+
+}
+
+
+function hideDashboard() {
+
+
+  normaliseCard(
+    "#dashboardCard"
+  );
+
+
+  /*
+     Database becomes active again.
+  */
+
+  activateCard(
+    "#databaseCard"
+  );
+
+
+  gsap.to(
+    "#flowSummary",
+    {
+
+      opacity:
+        0,
+
+      y:
+        10,
+
+      duration:
+        .25
+
+    }
+  );
+
+
+  gsap.to(
+    "#dashboardCard",
+    {
+
+      opacity:
+        0,
+
+      y:
+        22,
+
+      scale:
+        .97,
+
+      duration:
+        .38,
+
+      delay:
+        .08
+
+    }
+  );
+
+
+  gsap.to(
+    "#connector3",
+    {
+
+      opacity:
+        0,
+
+      scaleX:
+        0,
+
+      duration:
+        .30,
+
+      delay:
+        .10
+
+    }
+  );
+
+
+}
+
+
+/* =========================================================
+   NEXT
+========================================================= */
+
+function nextStep() {
+
+
+  if (
+    currentStep === 1
+  ) {
+
+
+    currentStep =
+      2;
+
+
+    showAIStage();
+
+
+    return true;
+
+
+  }
+
+
+  if (
+    currentStep === 2
+  ) {
+
+
+    currentStep =
+      3;
+
+
+    showKnowledgeModel();
+
+
+    return true;
+
+
+  }
+
+
+  if (
+    currentStep === 3
+  ) {
+
+
+    currentStep =
+      4;
+
+
+    showDatabase();
+
+
+    return true;
+
+
+  }
+
+
+  if (
+    currentStep === 4
+  ) {
+
+
+    currentStep =
+      5;
+
+
+    showDashboard();
+
+
+    return true;
+
+
+  }
+
+
+  return false;
+
+
+}
+
+
+/* =========================================================
+   PREVIOUS
+========================================================= */
+
+function previousStep() {
+
+
+  if (
+    currentStep === 5
+  ) {
+
+
+    currentStep =
+      4;
+
+
+    hideDashboard();
+
+
+    return true;
+
+
+  }
+
+
+  if (
+    currentStep === 4
+  ) {
+
+
+    currentStep =
+      3;
+
+
+    hideDatabase();
+
+
+    return true;
+
+
+  }
+
+
+  if (
+    currentStep === 3
+  ) {
+
+
+    currentStep =
+      2;
+
+
+    hideKnowledgeModel();
+
+
+    return true;
+
+
+  }
+
+
+  if (
+    currentStep === 2
+  ) {
+
+
+    currentStep =
+      1;
+
+
+    hideAIStage();
+
+
+    return true;
+
+
+  }
+
+
+  return false;
+
+
+}
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+function resetSlide() {
+
+
+  currentStep =
+    1;
+
+
+  gsap.killTweensOf(
+    [
+      "#heading",
+      "#headingNote",
+      "#sourceCard",
+      "#connector1",
+      "#connector2",
+      "#connector3",
+      "#aiCard",
+      "#databaseCard",
+      "#dashboardCard",
+      "#entityEvent",
+      "#entityIncident",
+      "#entityImpact",
+      "#entityArrow1",
+      "#entityArrow2",
+      "#modelCaption",
+      "#flowSummary"
+    ]
+  );
+
+
+  initialEntrance();
+
+
+}
+
+
+/* =========================================================
+   START
+========================================================= */
+
+initialEntrance();
+
+
+/* =========================================================
+   CLICK
+========================================================= */
+
+document.addEventListener(
+  "click",
+  () => {
+
+
+    nextStep();
+
+
+  }
+);
+
+
+/* =========================================================
+   KEYBOARD
+========================================================= */
+
+document.addEventListener(
+  "keydown",
+  event => {
+
+
+    if (
+      event.key === "ArrowRight"
+      ||
+      event.key === " "
+    ) {
+
+
+      event.preventDefault();
+
+
+      nextStep();
+
+
+      return;
+
+
+    }
+
+
+    if (
+      event.key === "ArrowLeft"
+    ) {
+
+
+      event.preventDefault();
+
+
+      previousStep();
+
+
+      return;
+
+
+    }
+
+
+    if (
+      event.key.toLowerCase()
+      === "f"
+    ) {
+
+
+      if (
+        !document.fullscreenElement
+      ) {
+
+
+        document
+          .documentElement
+          .requestFullscreen();
+
+
+      }
+
+      else {
+
+
+        document
+          .exitFullscreen();
+
+
+      }
+
+
+      return;
+
+
+    }
+
+
+    if (
+      event.key.toLowerCase()
+      === "r"
+    ) {
+
+
+      resetSlide();
+
+
+      return;
+
+
+    }
+
+
+  }
+);
+
+</script>
+
+
+</body>
+
+</html>

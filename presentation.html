@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>
+    AI-Powered Flood Data Extraction
+</title>
+
+
+<style>
+
+/* =========================================================
+   GLOBAL
+========================================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+
+html,
+body {
+
+    width: 100%;
+    height: 100%;
+
+    margin: 0;
+
+    padding: 0;
+
+    overflow: hidden;
+
+    background: #03101a;
+
+}
+
+
+/* =========================================================
+   PRESENTATION CONTAINER
+========================================================= */
+
+.presentation {
+
+    position: fixed;
+
+    inset: 0;
+
+    width: 100vw;
+
+    height: 100vh;
+
+    overflow: hidden;
+
+    background: #03101a;
+
+}
+
+
+/* =========================================================
+   SLIDE FRAME
+========================================================= */
+
+.slide-frame {
+
+    position: absolute;
+
+    inset: 0;
+
+    width: 100%;
+
+    height: 100%;
+
+    border: none;
+
+    margin: 0;
+
+    padding: 0;
+
+    background: #03101a;
+
+    opacity: 1;
+
+    transform: scale(1);
+
+    transition:
+
+        opacity .35s ease,
+        transform .35s ease;
+
+}
+
+
+/* =========================================================
+   TRANSITION STATES
+========================================================= */
+
+.slide-frame.fade-out {
+
+    opacity: 0;
+
+    transform:
+        scale(.992);
+
+}
+
+
+.slide-frame.fade-in {
+
+    opacity: 1;
+
+    transform:
+        scale(1);
+
+}
+
+
+/* =========================================================
+   HIDDEN LOADING SCREEN
+========================================================= */
+
+.loading {
+
+    position: absolute;
+
+    inset: 0;
+
+    z-index: -1;
+
+    background: #03101a;
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div
+    class="presentation"
+    id="presentation"
+>
+
+
+<iframe
+
+    id="slideFrame"
+
+    class="slide-frame"
+
+    src="slide_1.html"
+
+    allow="fullscreen"
+
+></iframe>
+
+
+<div
+    class="loading"
+></div>
+
+
+</div>
+
+
+
+<script>
+
+/* =========================================================
+   SLIDE CONFIGURATION
+
+   "steps" means how many presentation states that slide has.
+
+   Slide 1:
+   no manual internal animation steps
+   → steps = 1
+
+   Slide 2:
+   state 1 = normal article
+   state 2 = highlights
+   state 3 = structured information
+   state 4 = final message
+   → steps = 4
+
+   When you add future slides, simply add another object.
+========================================================= */
+
+const slides = [
+
+    {
+        file: "slide_1.html",
+        steps: 1
+    },
+
+    {
+        file: "slide_2.html",
+        steps: 4
+    },
+
+    {
+        file: "slide_3.html",
+        steps: 5
+    },
+
+    {
+        file: "slide_4.html",
+        steps: 5
+    },
+
+    {
+        file: "slide_5.html",
+        steps: 3
+    },
+    {
+        file: "slide_6.html",
+        steps: 1
+    }
+
+
+    /* =====================================================
+       FUTURE EXAMPLE
+
+       Uncomment when slide_3.html exists:
+
+       ,
+
+       {
+           file: "slide_3.html",
+           steps: 3
+       }
+
+       ,
+
+       {
+           file: "slide_4.html",
+           steps: 2
+       }
+
+       ,
+
+       {
+           file: "slide_5.html",
+           steps: 1
+       }
+
+    ===================================================== */
+
+];
+
+
+
+/* =========================================================
+   PRESENTATION STATE
+========================================================= */
+
+let currentSlideIndex = 0;
+
+
+/*
+   Each HTML slide starts at its first state.
+*/
+
+let currentStep = 1;
+
+
+/*
+   Prevent extremely fast repeated transitions.
+*/
+
+let changingSlide = false;
+
+
+
+/* =========================================================
+   DOM
+========================================================= */
+
+const frame =
+    document.getElementById(
+        "slideFrame"
+    );
+
+
+
+/* =========================================================
+   LOAD SLIDE
+========================================================= */
+
+function loadSlide(
+    index,
+    direction = "forward"
+) {
+
+
+    if (
+        index < 0 ||
+        index >= slides.length ||
+        changingSlide
+    ) {
+
+        return;
+
+    }
+
+
+    changingSlide = true;
+
+
+    /*
+       Fade old slide out.
+    */
+
+    frame.classList.add(
+        "fade-out"
+    );
+
+
+    setTimeout(
+        () => {
+
+
+            currentSlideIndex =
+                index;
+
+
+            currentStep =
+                1;
+
+
+            /*
+               Load the new independent HTML slide.
+            */
+
+            frame.src =
+                slides[
+                    currentSlideIndex
+                ].file;
+
+
+            /*
+               Wait for the new HTML slide
+               to finish loading.
+            */
+
+            frame.onload =
+                () => {
+
+
+                    frame.classList.remove(
+                        "fade-out"
+                    );
+
+
+                    frame.classList.add(
+                        "fade-in"
+                    );
+
+
+                    changingSlide =
+                        false;
+
+
+                    /*
+                       Make sure the parent presentation
+                       keeps keyboard control.
+                    */
+
+                    window.focus();
+
+
+                };
+
+
+        },
+        260
+    );
+
+}
+
+
+
+/* =========================================================
+   SEND KEY TO CURRENT SLIDE
+
+   This allows presentation.html to trigger the keyboard
+   controls that already exist inside slide_2.html.
+
+   Your slide files themselves do not need to be modified.
+========================================================= */
+
+function sendKeyToSlide(
+    key
+) {
+
+
+    try {
+
+
+        const slideDocument =
+            frame.contentDocument
+            ||
+            frame.contentWindow.document;
+
+
+        const keyboardEvent =
+            new KeyboardEvent(
+                "keydown",
+                {
+
+                    key: key,
+
+                    code:
+                        key === "ArrowRight"
+                            ? "ArrowRight"
+                            : key === "ArrowLeft"
+                            ? "ArrowLeft"
+                            : key,
+
+                    bubbles: true,
+
+                    cancelable: true
+
+                }
+            );
+
+
+        /*
+           Your slide HTML currently listens on document,
+           therefore dispatch directly to its document.
+        */
+
+        slideDocument.dispatchEvent(
+            keyboardEvent
+        );
+
+
+    }
+
+    catch (
+        error
+    ) {
+
+
+        console.warn(
+            "Could not forward keyboard event to slide.",
+            error
+        );
+
+
+    }
+
+}
+
+
+
+/* =========================================================
+   MOVE FORWARD
+========================================================= */
+
+function goForward() {
+
+
+    if (
+        changingSlide
+    ) {
+
+        return;
+
+    }
+
+
+    const slide =
+        slides[
+            currentSlideIndex
+        ];
+
+
+    /*
+       -----------------------------------------------------
+       CURRENT SLIDE STILL HAS ANIMATION STEPS
+       -----------------------------------------------------
+
+       Send Right Arrow into that individual HTML slide.
+    */
+
+    if (
+        currentStep <
+        slide.steps
+    ) {
+
+
+        sendKeyToSlide(
+            "ArrowRight"
+        );
+
+
+        currentStep++;
+
+
+        return;
+
+    }
+
+
+    /*
+       -----------------------------------------------------
+       ANIMATION IS FINISHED
+       MOVE TO NEXT HTML SLIDE
+       -----------------------------------------------------
+    */
+
+    if (
+        currentSlideIndex <
+        slides.length - 1
+    ) {
+
+
+        loadSlide(
+            currentSlideIndex + 1,
+            "forward"
+        );
+
+
+    }
+
+}
+
+
+
+/* =========================================================
+   MOVE BACKWARD
+========================================================= */
+
+function goBackward() {
+
+
+    if (
+        changingSlide
+    ) {
+
+        return;
+
+    }
+
+
+    /*
+       -----------------------------------------------------
+       CURRENT SLIDE HAS PREVIOUS ANIMATION STATES
+       -----------------------------------------------------
+    */
+
+    if (
+        currentStep > 1
+    ) {
+
+
+        sendKeyToSlide(
+            "ArrowLeft"
+        );
+
+
+        currentStep--;
+
+
+        return;
+
+    }
+
+
+    /*
+       -----------------------------------------------------
+       ALREADY AT FIRST STATE
+       GO TO PREVIOUS HTML SLIDE
+       -----------------------------------------------------
+    */
+
+    if (
+        currentSlideIndex > 0
+    ) {
+
+
+        const previousIndex =
+            currentSlideIndex - 1;
+
+
+        loadSlide(
+            previousIndex,
+            "backward"
+        );
+
+
+        /*
+           IMPORTANT:
+
+           Once previous slide loads,
+           put our controller at its final step.
+
+           This means if you return from Slide 3 to Slide 2,
+           Slide 2 can then move backwards through its
+           extraction animation.
+        */
+
+        setTimeout(
+            () => {
+
+
+                currentStep =
+                    slides[
+                        previousIndex
+                    ].steps;
+
+
+                /*
+                   Reconstruct the previous slide
+                   to its final animation state.
+
+                   For each required step,
+                   forward a Right Arrow.
+                */
+
+                if (
+                    currentStep > 1
+                ) {
+
+
+                    let step =
+                        1;
+
+
+                    const interval =
+                        setInterval(
+                            () => {
+
+
+                                if (
+                                    step >=
+                                    currentStep
+                                ) {
+
+
+                                    clearInterval(
+                                        interval
+                                    );
+
+
+                                    return;
+
+                                }
+
+
+                                sendKeyToSlide(
+                                    "ArrowRight"
+                                );
+
+
+                                step++;
+
+
+                            },
+                            90
+                        );
+
+
+                }
+
+
+            },
+            700
+        );
+
+
+    }
+
+}
+
+
+
+/* =========================================================
+   RESTART CURRENT SLIDE
+========================================================= */
+
+function restartCurrentSlide() {
+
+
+    currentStep =
+        1;
+
+
+    /*
+       Reloading iframe fully resets the slide's own JS.
+    */
+
+    frame.src =
+        slides[
+            currentSlideIndex
+        ].file;
+
+
+}
+
+
+
+/* =========================================================
+   FULLSCREEN
+========================================================= */
+
+async function toggleFullscreen() {
+
+
+    try {
+
+
+        if (
+            !document.fullscreenElement
+        ) {
+
+
+            await document
+                .documentElement
+                .requestFullscreen();
+
+
+        }
+
+        else {
+
+
+            await document
+                .exitFullscreen();
+
+
+        }
+
+
+    }
+
+    catch (
+        error
+    ) {
+
+
+        console.warn(
+            "Fullscreen could not be activated.",
+            error
+        );
+
+
+    }
+
+}
+
+
+
+/* =========================================================
+   GLOBAL KEYBOARD CONTROL
+========================================================= */
+
+document.addEventListener(
+    "keydown",
+    event => {
+
+
+        /* -------------------------------------------------
+           RIGHT ARROW / SPACE
+           forward
+        ------------------------------------------------- */
+
+        if (
+            event.key === "ArrowRight" ||
+            event.key === " "
+        ) {
+
+
+            event.preventDefault();
+
+
+            goForward();
+
+
+            return;
+
+        }
+
+
+
+        /* -------------------------------------------------
+           LEFT ARROW
+           backward
+        ------------------------------------------------- */
+
+        if (
+            event.key === "ArrowLeft"
+        ) {
+
+
+            event.preventDefault();
+
+
+            goBackward();
+
+
+            return;
+
+        }
+
+
+
+        /* -------------------------------------------------
+           F
+           fullscreen
+        ------------------------------------------------- */
+
+        if (
+            event.key.toLowerCase()
+            === "f"
+        ) {
+
+
+            event.preventDefault();
+
+
+            toggleFullscreen();
+
+
+            return;
+
+        }
+
+
+
+        /* -------------------------------------------------
+           R
+           restart current slide
+        ------------------------------------------------- */
+
+        if (
+            event.key.toLowerCase()
+            === "r"
+        ) {
+
+
+            event.preventDefault();
+
+
+            restartCurrentSlide();
+
+
+            return;
+
+        }
+
+
+    }
+);
+
+
+
+/* =========================================================
+   MOUSE CLICK
+
+   Optional:
+   normal click = forward
+
+   This lets you also use a presentation clicker.
+========================================================= */
+
+document.addEventListener(
+    "click",
+    event => {
+
+
+        /*
+           Only parent presentation receives this.
+
+           The iframe remains visually independent.
+        */
+
+
+        goForward();
+
+
+    }
+);
+
+
+
+/* =========================================================
+   INITIAL LOAD
+========================================================= */
+
+frame.addEventListener(
+    "load",
+    () => {
+
+
+        window.focus();
+
+
+    }
+);
+
+
+</script>
+
+
+</body>
+
+</html>
